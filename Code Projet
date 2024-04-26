@@ -1,0 +1,293 @@
+import tkinter as tk
+from tkinter import ttk
+import tkinter.messagebox
+import random
+import time
+
+
+class CarnetOrdres:
+    def __init__(self, gui):
+        self.gui = gui
+        self.ordres_achat = []
+        self.ordres_vente = []
+        self.transactions = []
+        self.lire_ordres('/Users/albanhoerdt/Documents/Cours Dauphine L3/S2/Python/Projet/Donnees_OrderBook')
+        self.auto_executing = False  # Variable pour activer/désactiver le mode continu
+
+    def toggle_auto_executing(self):
+        self.auto_executing = not self.auto_executing
+        if self.auto_executing:
+            self.execute_continuously()
+            self.generate_orders_periodically()  # Appel immédiat pour démarrer la génération des ordres
+        else:
+            # Ajouter des mesures pour arrêter le processus si nécessaire
+            pass
+
+    def execute_continuously(self):
+        if self.auto_executing:
+            self.executer_ordres()
+            self.gui.master.after(1000, self.execute_continuously)
+
+    def lire_ordres(self, filepath):
+        with open(filepath, 'r') as file:
+            for i, line in enumerate(file):
+                if i >= 40:
+                    break
+                parts = line.strip().split(',')
+                type_ordre = 'achat' if parts[0] == 'B' else 'vente'
+                id_ordre = int(parts[1])
+                ref_actif = parts[2].strip('"')
+                prix = float(parts[3])
+                quantite = int(parts[4]) if len(parts) > 4 else 1
+                self.ajouter_ordre(type_ordre, id_ordre, ref_actif, prix, quantite)
+                
+    def generate_taker_order(self):
+        reference = random.choice(['30501', '31601', '31502'])
+        order_type = random.choice(['achat', 'vente'])
+        if order_type == 'achat' and self.ordres_vente:
+            # Taker achète à un prix légèrement supérieur au minimum du marché
+            prix_achat = max((ordre['prix'] for ordre in self.ordres_vente), default=10) + random.uniform(1, 100)
+            prix_achat = round(prix_achat, 1)
+            quantite_achat = random.randint(1, 2000)
+            self.ajouter_ordre('achat', len(self.ordres_achat) + 1, reference, prix_achat, quantite_achat)
+            if self.auto_executing:  # Exécute les ordres immédiatement si en mode continu
+                self.executer_ordres()
+        elif order_type == 'vente' and self.ordres_achat:
+            # Taker vend à un prix légèrement inférieur au maximum du marché
+            prix_vente = min((ordre['prix'] for ordre in self.ordres_achat), default=10) - random.uniform(1, 100)
+            prix_vente = round(prix_vente, 1)
+            quantite_vente = random.randint(1, 2000)
+            self.ajouter_ordre('vente', len(self.ordres_vente) + 1, reference, prix_vente, quantite_vente)
+            if self.auto_executing:  # Exécute les ordres immédiatement si en mode continu
+                self.executer_ordres()
+
+    def generate_maker_order(self):
+        reference = random.choice(['30501', '31601', '31502'])
+        order_type = random.choice(['achat', 'vente'])
+        if order_type == 'achat' and self.ordres_vente:
+            # Maker achète à un prix légèrement inférieur au minimum du marché
+            prix_achat = min((ordre['prix'] for ordre in self.ordres_vente), default=10) - random.uniform(1, 100)
+            prix_achat = round(prix_achat, 1)
+            quantite_achat = random.randint(1, 2000)
+            self.ajouter_ordre('achat', len(self.ordres_achat) + 1, reference, prix_achat, quantite_achat)
+            if self.auto_executing:  # Exécute les ordres immédiatement si en mode continu
+                self.executer_ordres()
+        elif order_type == 'vente' and self.ordres_achat:
+            # Maker vend à un prix légèrement supérieur au maximum du marché
+            prix_vente = max((ordre['prix'] for ordre in self.ordres_achat), default=10) + random.uniform(1, 100)
+            prix_vente = round(prix_vente, 1)
+            quantite_vente = random.randint(1, 2000)
+            self.ajouter_ordre('vente', len(self.ordres_vente) + 1, reference, prix_vente, quantite_vente)
+            if self.auto_executing:  # Exécute les ordres immédiatement si en mode continu
+                self.executer_ordres()
+
+    def ajouter_ordre(self, type_ordre, id_ordre, ref_actif, prix, quantite):
+        type_ordre = type_ordre.lower()
+
+        max_order_number = max(
+            max((ordre['id_ordre'] for ordre in self.ordres_achat), default=0),
+            max((ordre['id_ordre'] for ordre in self.ordres_vente), default=0)
+        )
+        next_order_number = max_order_number + 1
+
+        if quantite > 0:
+            ordre = {'type': type_ordre, 'id_ordre': next_order_number, 'ref_actif': ref_actif, 'prix': prix, 'quantite': quantite}
+            if type_ordre == 'achat':
+                self.ordres_achat.append(ordre)
+                self.ordres_achat.sort(key=lambda x: x['id_ordre'])
+            else:
+                self.ordres_vente.append(ordre)
+                self.ordres_vente.sort(key=lambda x: x['id_ordre'])
+            self.gui.afficher_carnet(self.ordres_achat, self.ordres_vente)
+        
+    def executer_ordres_logique(self):
+        achats = sorted(self.ordres_achat[:], key=lambda x: x['prix'], reverse=True)
+        ventes = sorted(self.ordres_vente[:], key=lambda x: x['prix'])
+        for achat in achats:
+            if achat['quantite'] == 0:
+                continue
+            for vente in ventes:
+                if vente['quantite'] == 0:
+                    continue
+                if achat['ref_actif'] == vente['ref_actif'] and achat['prix'] >= vente['prix']:
+                    quantite_executee = min(achat['quantite'], vente['quantite'])
+                    transaction_prix = vente['prix']
+                    self.transactions.append({
+                        'achat_id': achat['id_ordre'],
+                        'vente_id': vente['id_ordre'],
+                        'prix': transaction_prix,
+                        'quantite': quantite_executee,
+                        'ref_actif': achat['ref_actif']
+                    })
+                    achat['quantite'] -= quantite_executee
+                    vente['quantite'] -= quantite_executee
+                    if vente['quantite'] == 0:
+                        self.ordres_vente.remove(vente)
+                    if achat['quantite'] == 0:
+                        self.ordres_achat.remove(achat)
+                        break
+        self.gui.afficher_carnet(self.ordres_achat, self.ordres_vente)
+        self.gui.ouvrir_historique(self.transactions)
+        
+    def executer_ordres(self):
+        self.executer_ordres_logique()
+        self.gui.afficher_carnet(self.ordres_achat, self.ordres_vente)
+        self.gui.ouvrir_historique(self.transactions)
+    
+    def calculer_tick_et_lot(self, ref_actif):
+        filepath = "/Users/albanhoerdt/Documents/Cours Dauphine L3/S2/Python/Projet/Donnees_Tick_Lot"
+        with open(filepath, 'r') as file:
+            for line in file:
+                parts = line.strip().split(',')
+                if parts[0] == ref_actif:
+                    lot = float(parts[1])
+                    tick = float(parts[2])
+                    return tick, lot
+        return "N/A", "N/A"
+    
+
+class CarnetOrdresGUI:
+    def __init__(self, master):
+        self.master = master
+        master.title("Carnet d'ordres")
+        self.setup_trees()
+        self.setup_form()
+
+    def setup_trees(self):
+        frame = tk.Frame(self.master)
+        frame.pack(side='top', fill=tk.X)
+        # Label "Achat" à gauche
+        tk.Label(frame, text="Achat", font=('Arial', 14)).pack(side='left', padx=10)
+         
+        # Label "Vente" à droite
+        tk.Label(frame, text="Vente", font=('Arial', 14)).pack(side='right', padx=10)
+        
+        self.tree_achat = ttk.Treeview(frame, columns=('Ordre', 'Référence', 'Prix', 'Quantité'), show='headings')
+        self.tree_achat.pack(side='left', fill=tk.BOTH, expand=True)
+        self.tree_vente = ttk.Treeview(frame, columns=('Ordre', 'Référence', 'Prix', 'Quantité'), show='headings')
+        self.tree_vente.pack(side='right', fill=tk.BOTH, expand=True)
+        for tree in (self.tree_achat, self.tree_vente):
+            for col in tree['columns']:
+                tree.heading(col, text=col)
+                tree.column(col, width=100)
+        self.carnet = CarnetOrdres(self)
+
+    def setup_form(self):
+        form_frame = tk.Frame(self.master)
+        form_frame.pack(side='top', fill=tk.X)
+        self.type_ordre_var = tk.StringVar()
+        self.prix_var = tk.StringVar()
+        self.quantite_var = tk.StringVar()
+        self.reference_var = tk.StringVar()
+        # Configuration des labels pour le tick et le lot au-dessus des entrées de formulaire
+        self.tick_label = tk.Label(form_frame, text="Tick: N/A")
+        self.tick_label.grid(row=2, column=3, columnspan=3, sticky='ew')  # Prend toute la largeur
+        self.lot_label = tk.Label(form_frame, text="Lot: N/A")
+        self.lot_label.grid(row=3, column=3, columnspan=3, sticky='ew')  # Prend toute la largeur
+        
+        
+        tk.Label(form_frame, text="Type d'Ordre (Achat/Vente):").grid(row=0, column=0)
+        tk.Entry(form_frame, textvariable=self.type_ordre_var).grid(row=0, column=1)
+        tk.Label(form_frame, text="Prix:").grid(row=1, column=0)
+        tk.Entry(form_frame, textvariable=self.prix_var).grid(row=1, column=1)
+        tk.Label(form_frame, text="Quantité:").grid(row=2, column=0)
+        tk.Entry(form_frame, textvariable=self.quantite_var).grid(row=2, column=1)
+        tk.Label(form_frame, text="Référence:").grid(row=3, column=0)
+        tk.Entry(form_frame, textvariable=self.reference_var).grid(row=3, column=1)
+        tk.Button(form_frame, text="Ajouter Ordre", command=self.ajouter_ordre_new).grid(row=4, column=0, columnspan=2)
+        tk.Button(form_frame, text="Exécuter Ordres", command=self.carnet.executer_ordres).grid(row=5, column=0, columnspan=2)
+        tk.Button(form_frame, text="Historique", command=self.ouvrir_historique).grid(row=6, column=0, columnspan=2)
+         # Ajout d'un champ pour la référence du calcul de tick et lot
+        tk.Label(form_frame, text="Ref pour Tick/Lot:").grid(row=5, column=3)
+        self.ref_tick_lot_var = tk.StringVar()
+        tk.Entry(form_frame, textvariable=self.ref_tick_lot_var).grid(row=5, column=4)
+        tk.Button(form_frame, text="Valeur Tick et Lot", command=self.afficher_tick_lot).grid(row=4, column=4)
+        
+        # Add entry and button for order deletion
+        self.delete_order_var = tk.StringVar()
+        self.order_type_var = tk.StringVar()
+
+        tk.Label(form_frame, text="Numéro d'Ordre à supprimer:").grid(row=7, column=0)
+        tk.Entry(form_frame, textvariable=self.delete_order_var).grid(row=7, column=1)
+
+        # Radiobuttons to select the type of order to delete
+        tk.Radiobutton(form_frame, text="Achat", variable=self.order_type_var, value="achat").grid(row=7, column=2)
+        tk.Radiobutton(form_frame, text="Vente", variable=self.order_type_var, value="vente").grid(row=7, column=3)
+
+        tk.Button(form_frame, text="Supprimer Ordre", command=self.supprimer_ordre).grid(row=7, column=4)
+        
+        # Bouton pour activer/désactiver le mode continu
+        self.continuous_button = tk.Button(form_frame, text="Mode Continu", command=self.toggle_continuous)
+        self.continuous_button.grid(row=1, column=4, columnspan=2)
+        
+        # Ajout des boutons pour générer des ordres Taker et Maker
+        tk.Button(form_frame, text="Générer Ordre Taker", command=self.carnet.generate_taker_order).grid(row=9, column=1)
+        tk.Button(form_frame, text="Générer Ordre Maker", command=self.carnet.generate_maker_order).grid(row=9, column=4)
+
+        
+    def toggle_continuous(self):
+        self.carnet.toggle_auto_executing()
+        if self.carnet.auto_executing:
+            self.carnet.execute_continuously()
+            self.continuous_button.config(text="Arrêter Mode Continu")
+        else:
+            self.continuous_button.config(text="Mode Continu")
+    
+    def supprimer_ordre(self):
+        order_id = int(self.delete_order_var.get())
+        order_type = self.order_type_var.get()
+
+        if order_type == "achat":
+            self.carnet.ordres_achat = [ordre for ordre in self.carnet.ordres_achat if ordre['id_ordre'] != order_id]
+        elif order_type == "vente":
+            self.carnet.ordres_vente = [ordre for ordre in self.carnet.ordres_vente if ordre['id_ordre'] != order_id]
+
+        self.afficher_carnet(self.carnet.ordres_achat, self.carnet.ordres_vente)
+        tkinter.messagebox.showinfo("Success", f"Ordre {order_id} supprimé.")
+    
+    def afficher_tick_lot(self):
+        ref_actif = self.ref_tick_lot_var.get()
+        tick, lot = self.carnet.calculer_tick_et_lot(ref_actif)
+        self.tick_label.config(text=f"Tick pour {ref_actif}: {tick}")
+        self.lot_label.config(text=f"Lot pour {ref_actif}: {lot}")
+        
+    def ajouter_ordre_new(self):
+        try:
+            type_ordre = self.type_ordre_var.get()
+            prix = float(self.prix_var.get())
+            quantite = int(self.quantite_var.get())
+            reference = self.reference_var.get()
+            id_ordre = len(self.carnet.ordres_achat) + len(self.carnet.ordres_vente) + 1
+            self.carnet.ajouter_ordre(type_ordre, id_ordre, reference, prix, quantite)
+            # Après l'ajout d'un nouvel ordre, tester s'il faut exécuter les ordres
+            if self.carnet.auto_executing:
+                self.carnet.executer_ordres()
+        except ValueError:
+            tkinter.messagebox.showerror("Erreur", "Veuillez entrer des valeurs valides.")
+
+    def afficher_carnet(self, ordres_achat, ordres_vente):
+        for tree in (self.tree_achat, self.tree_vente):
+            tree.delete(*tree.get_children())
+        for ordre in ordres_achat:
+            self.tree_achat.insert('', 'end', values=(ordre['id_ordre'], ordre['ref_actif'], ordre['prix'], ordre['quantite']))
+        for ordre in ordres_vente:
+            self.tree_vente.insert('', 'end', values=(ordre['id_ordre'], ordre['ref_actif'], ordre['prix'], ordre['quantite']))
+
+    def ouvrir_historique(self):
+        history_window = tk.Toplevel(self.master)
+        history_window.title("Historique des Transactions")
+        tree = ttk.Treeview(history_window, columns=('Achat ID', 'Vente ID', 'Référence', 'Prix', 'Quantité'), show='headings')
+        tree.pack(expand=True, fill=tk.BOTH)
+        for col in tree['columns']:
+            tree.heading(col, text=col)
+            tree.column(col, width=100)
+        for transaction in self.carnet.transactions:
+            tree.insert('', 'end', values=(transaction['achat_id'], transaction['vente_id'], transaction['ref_actif'], transaction['prix'], transaction['quantite']))
+    
+def main():
+    root = tk.Tk()
+    app = CarnetOrdresGUI(root)
+    root.mainloop()
+
+if __name__ == '__main__':
+    main()
