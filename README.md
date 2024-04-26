@@ -296,7 +296,7 @@
     return "N/A", "N/A"
     </code></pre>
         </section>
-        <section id="seconde-classe-carnetordresgui" class="level1">
+<section id="seconde-classe-carnetordresgui" class="level1">
             <h2 class="anchored" data-anchor-id="seconde-classe-carnetordresgui">b. Seconde Classe CarnetOrdresGUI</h2>
             <p>Dans la seconde classe CarnetOrdresGUI nous allons créer l’interface, en voici un aperçu, nous expliquons dans la suite sa création et son utilisation.</p>
             <img width="495" alt="Capture d’écran 2024-04-26 à 20 28 33" src="https://github.com/AlHoer/Carnet-d-ordre/assets/163281343/1663689a-e5c4-43ba-9aae-a94b4194f673">
