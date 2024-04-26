@@ -513,19 +513,19 @@ if __name__ == '__main__':
         </section>
        <section id="Conclusion" class="level1">
                <h1 class="anchored" data-anchor-id="Conclusion">Conclusion</h1>
-               <p>Le projet de carnet d'ordres que nous avons développé est un exemple fonctionnel d'une application simple permettant de gérer des ordres d'achat et de vente sur un marché financier simulé. Voici quelques points à retenir de ce projet :
+               <p>Le projet de carnet d'ordres que nous avons développé est un exemple fonctionnel d'une application simple permettant de gérer des ordres d'achat et de vente sur un marché financier simulé. Voici quelques points à retenir de ce projet :<p>
    
-   1. **Fonctionnalités principales** : L'application permet d'ajouter des ordres d'achat et de vente, de les exécuter manuellement ou automatiquement en mode continu, et de visualiser le carnet d'ordres ainsi que l'historique des transactions.
+   <p>1. **Fonctionnalités principales** : L'application permet d'ajouter des ordres d'achat et de vente, de les exécuter manuellement ou automatiquement en mode continu, et de visualiser le carnet d'ordres ainsi que l'historique des transactions.<p>
    
-   2. **Interface graphique conviviale** : Nous avons utilisé Tkinter pour créer une interface utilisateur simple mais efficace, avec des boutons et des champs pour interagir avec l'application de manière intuitive.
+   <p>2. **Interface graphique conviviale** : Nous avons utilisé Tkinter pour créer une interface utilisateur simple mais efficace, avec des boutons et des champs pour interagir avec l'application de manière intuitive.<p>
    
-   3. **Logique d'exécution des ordres** : Les ordres sont exécutés en respectant les règles spécifiées, notamment en s'assurant que les ordres d'achat correspondent à des ordres de vente existants au niveau des prix, et vice versa.
+   <p>3. **Logique d'exécution des ordres** : Les ordres sont exécutés en respectant les règles spécifiées, notamment en s'assurant que les ordres d'achat correspondent à des ordres de vente existants au niveau des prix, et vice versa.<p>
    
-   4. **Mode continu** : L'application offre la possibilité de fonctionner en mode continu, où de nouveaux ordres sont générés périodiquement et exécutés automatiquement.
+   <p>4. **Mode continu** : L'application offre la possibilité de fonctionner en mode continu, où de nouveaux ordres sont générés périodiquement et exécutés automatiquement.<p>
    
-   5. **Gestion des données** : Les données des ordres et des transactions sont stockées dans des structures de données appropriées, et les transactions sont enregistrées pour consultation ultérieure.
+   <p>5. **Gestion des données** : Les données des ordres et des transactions sont stockées dans des structures de données appropriées, et les transactions sont enregistrées pour consultation ultérieure.<p>
    
-   En conclusion, ce projet fournit une base solide pour une application de trading simplifiée. Il pourrait être étendu avec des fonctionnalités supplémentaires telles que la gestion des utilisateurs, l'authentification, la visualisation graphique des données, etc., pour en faire une solution plus complète et robuste.</p>
+   <p>En conclusion, ce projet fournit une base solide pour une application de trading simplifiée. Il pourrait être étendu avec des fonctionnalités supplémentaires telles que la gestion des utilisateurs, l'authentification, la visualisation graphique des données, etc., pour en faire une solution plus complète et robuste.</p>
     </section>
     </div>
     <div class="footer">
