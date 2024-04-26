@@ -207,7 +207,7 @@
             self.executer_ordres()
 </code></pre>
         </section>
-        <section id="methode-ajouter_ordre" class="level1">
+        <section id="methode-ajouter_ordre" class="level2">
             <h2 class="anchored" data-anchor-id="methode-ajouter_ordre">Méthode ajouter_ordre</h2>
             <p>La méthode ajouter_ordre gère l'ajout d'un nouvel ordre au carnet d'ordres. Elle prend en paramètres le type d'ordre (achat ou vente), l'identifiant de l'ordre, la référence de l'actif, le prix et la quantité. Avant d'ajouter l'ordre, elle normalise le type d'ordre en le mettant en minuscules. Ensuite, elle détermine le numéro d'ordre suivant en trouvant le maximum des identifiants d'ordres existants dans les listes d'ordres d'achat et de vente, puis elle incrémente ce numéro. Si la quantité de l'ordre est supérieure à zéro, elle crée un dictionnaire représentant l'ordre avec les détails fournis. Selon le type d'ordre, elle ajoute cet ordre à la liste appropriée (achat ou vente), trie ensuite les listes par identifiant d'ordre, et met à jour l'affichage du carnet d'ordres dans l'interface graphique. Cette méthode assure donc l'ajout correct et la mise à jour des ordres dans le carnet d'ordres, maintenant ainsi une représentation précise et à jour de l'état du marché.</p>
             <pre><code class="language-python"> def ajouter_ordre(self, type_ordre, id_ordre, ref_actif, prix, quantite):
@@ -231,7 +231,7 @@
 </code></pre>
         </section>
     </section>
-    <section id="execution-des-ordres" class="level1">
+    <section id="Execution-des-ordres" class="level1">
         <h1>Exécution des ordres</h1>
         <hr>
         <section id="methode-execution-logique" class="level2">
@@ -267,8 +267,8 @@
     self.gui.ouvrir_historique(self.transactions)
 </code></pre>
         </section>
-        <section id="execution" class="level2">
-            <h2 class="anchored" data-anchor-id="execution">b. Exécution</h2>
+        <section id="Execution" class="level2">
+            <h2 class="anchored" data-anchor-id="Execution">b. Exécution</h2>
             <p>La méthode executer_ordres est responsable de l'exécution des ordres. Elle commence par appeler la méthode executer_ordres_logique pour gérer la logique d'exécution des ordres. Ensuite, elle met à jour l'affichage du carnet d'ordres dans l'interface graphique en affichant les listes d'ordres d'achat et de vente mises à jour. Enfin, elle ouvre une fenêtre affichant l'historique des transactions. Cette méthode coordonne le processus d'exécution des ordres et assure la mise à jour de l'affichage de l'état du carnet d'ordres et de l'historique des transactions.</p>
             <pre><code class="language-python">     
     def executer_ordres(self):
@@ -278,10 +278,10 @@
     </code></pre>
         </section>
     </section>
-    <section id="determination-des-tick-et-des-lot" class="level1">
+    <section id="determination-des-tick-et-des-lot" class="level2">
         <h1>Détermination des ticks et des lots</h1>
         <hr>
-        <section id="methode-calculer_tick_et_lot" class="level2">
+        <section id="methode-calculer_tick_et_lot" class="level3">
             <h2 class="anchored" data-anchor-id="methode-calculer_tick_et_lot">a. Méthode calculer_tick_et_lot</h2>
             <p>La fonction calculer_tick_et_lot prend en entrée une référence d'actif et cherche ses données de tick et de lot dans un fichier spécifié, ici Donnees_Tick_Lot. Elle ouvre le fichier, parcourt chaque ligne, et sépare les éléments en parties. Si la référence d'actif correspond à celle trouvée dans une ligne du fichier, la fonction extrait les valeurs du tick et du lot associé à cette référence. Ensuite, elle retourne ces valeurs. Si aucune correspondance n'est trouvée, elle retourne "N/A" pour indiquer que les données n'ont pas été trouvées. Cette fonction récupère les informations sur le tick et le lot d'un actif à partir d'un fichier et les renvoie pour utilisation.</p>
             <pre><code class="language-python"> def calculer_tick_et_lot(self, ref_actif):
