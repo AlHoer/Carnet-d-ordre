@@ -278,28 +278,26 @@
     </code></pre>
         </section>
     </section>
-    <section id="determination-des-tick-et-des-lot" class="level3">
-        <h1>Détermination des ticks et des lots</h1>
-        <hr>
-        <section id="methode-calculer_tick_et_lot" class="level3">
-            <h2 class="anchored" data-anchor-id="methode-calculer_tick_et_lot"> Méthode calculer_tick_et_lot</h2>
-            <p>La fonction calculer_tick_et_lot prend en entrée une référence d'actif et cherche ses données de tick et de lot dans un fichier spécifié, ici Donnees_Tick_Lot. Elle ouvre le fichier, parcourt chaque ligne, et sépare les éléments en parties. Si la référence d'actif correspond à celle trouvée dans une ligne du fichier, la fonction extrait les valeurs du tick et du lot associé à cette référence. Ensuite, elle retourne ces valeurs. Si aucune correspondance n'est trouvée, elle retourne "N/A" pour indiquer que les données n'ont pas été trouvées. Cette fonction récupère les informations sur le tick et le lot d'un actif à partir d'un fichier et les renvoie pour utilisation.</p>
-            <pre><code class="language-python"> def calculer_tick_et_lot(self, ref_actif):
-    filepath = "/Users/albanhoerdt/Documents/Cours Dauphine L3/S2/Python/Projet/Donnees_Tick_Lot"
-    with open(filepath, 'r') as file:
-        for line in file:
-            parts = line.strip().split(',')
-            if parts[0] == ref_actif:
-                lot = float(parts[1])
-                tick = float(parts[2])
-                return tick, lot
-    return "N/A", "N/A"
-    </code></pre>
-        </section>
-
-      
+       <section id="determination-des-tick-et-des-lot" class="level2">
+           <h2>Détermination des ticks et des lots</h2>
+           <hr>
+           <section id="methode-calculer_tick_et_lot" class="level3">
+               <h2 class="anchored" data-anchor-id="methode-calculer_tick_et_lot"> Méthode calculer_tick_et_lot</h2>
+               <p>La fonction calculer_tick_et_lot prend en entrée une référence d'actif et cherche ses données de tick et de lot dans un fichier spécifié, ici Donnees_Tick_Lot. Elle ouvre le fichier, parcourt chaque ligne, et sépare les éléments en parties. Si la référence d'actif correspond à celle trouvée dans une ligne du fichier, la fonction extrait les valeurs du tick et du lot associé à cette référence. Ensuite, elle retourne ces valeurs. Si aucune correspondance n'est trouvée, elle retourne "N/A" pour indiquer que les données n'ont pas été trouvées. Cette fonction récupère les informations sur le tick et le lot d'un actif à partir d'un fichier et les renvoie pour utilisation.</p>
+               <pre><code class="language-python"> def calculer_tick_et_lot(self, ref_actif):
+       filepath = "/Users/albanhoerdt/Documents/Cours Dauphine L3/S2/Python/Projet/Donnees_Tick_Lot"
+       with open(filepath, 'r') as file:
+           for line in file:
+               parts = line.strip().split(',')
+               if parts[0] == ref_actif:
+                   lot = float(parts[1])
+                   tick = float(parts[2])
+                   return tick, lot
+       return "N/A", "N/A"
+       </code></pre>
+           </section>
 <section id="seconde-classe-carnetordresgui" class="level1">
-            <h2 class="anchored" data-anchor-id="seconde-classe-carnetordresgui"> Seconde Classe CarnetOrdresGUI</h2>
+            <h1 class="anchored" data-anchor-id="seconde-classe-carnetordresgui"> Seconde Classe CarnetOrdresGUI</h1>
             <p>Dans la seconde classe CarnetOrdresGUI nous allons créer l’interface, en voici un aperçu, nous expliquons dans la suite sa création et son utilisation.</p>
             <img width="495" alt="Capture d’écran 2024-04-26 à 20 28 33" src="https://github.com/AlHoer/Carnet-d-ordre/assets/163281343/1663689a-e5c4-43ba-9aae-a94b4194f673">
             <section id="code-de-la-classe-carnetordresgui" class="level2">
