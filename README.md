@@ -279,7 +279,7 @@
         </section>
     </section>
        <section id="determination-des-tick-et-des-lot" class="level2">
-           <h2>Détermination des ticks et des lots</h2>
+           <h2>c. Détermination des ticks et des lots</h2>
            <hr>
            <section id="methode-calculer_tick_et_lot" class="level3">
                <h3 class="anchored" data-anchor-id="methode-calculer_tick_et_lot"> Méthode calculer_tick_et_lot</h3>
