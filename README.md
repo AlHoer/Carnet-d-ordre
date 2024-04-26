@@ -1,60 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet : Carnet d'Ordre</title>
-     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,.1);
-            margin: 20px 0;
-        }
-        h1 {
-            font-size: 2em; /* Gros et en gras */
-            font-weight: bold;
-            color: #0056b3;
-        }
-        h2 {
-            border-bottom: 2px solid #eee;
-            padding-bottom: 5px;
-        }
-        p, ul {
-            line-height: 1.6;
-        }
-        ul {
-            padding-left: 20px;
-        }
-        code {
-            background-color: #eee;
-            padding: 2px 4px;
-            border-radius: 4px;
-            font-family: monospace;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.8em;
-            color: #777;
-        }
-    </style>
-</head>
 <body>
 
 <div class="container">
-   <section id="creation-dun-carnet-dordre" class="level1">
-<h1>Création d'un carnet d'ordre</h1>
+   <section id="Projet-creation-dun-carnet-dordre" class="level1">
+<h1>Projet : Création d'un carnet d'ordre</h1>
 <hr>
-<section id="1.---Analyse-et-Conception-Révisée" class="level2">
-<h2 class="anchored" data-anchor-id="1.---Analyse-et-Conception-Révisée">1. Analyse et Conception Révisée</h2>
+<section id="1.---Analyse-et-Conception" class="level2">
+<h2 class="anchored" data-anchor-id="1.---Analyse-et-Conception">1. Analyse et Conception</h2>
 <section id="a.--Compréhension-Approfondie-des-Carnets-dOrdres" class="level3">
 <h3 class="anchored" data-anchor-id="a.--Compréhension-Approfondie-des-Carnets-dOrdres">a. Compréhension Approfondie des Carnets d'Ordres</h3>
 <p> Les carnets d'ordres doivent fonctionner de manière continue, reflétant un environnement dynamique où les participants peuvent à tout moment ajouter ou annuler des ordres. Cette flexibilité est essentielle pour simuler fidèlement le comportement des marchés financiers réels. Le projet que nous avons réalisé a pour but de créer un carnet d’ordres qui va être fonctionnel que cela soit pour stocker, exécuter, chercher ou même créer un ordre d’achat ou de vente. Il contient deux classes principales, la première est celle de la configuration qui va avoir pour objectif de créer un carnet d’ordre et de lui permettre de s’auto-gérer parfaitement. La seconde classe correspond à la création d’une interface qui va permettre à l’utilisateur de gérer directement le carnet d’ordre. Nous allons donc vous expliquer notre code étape par étape </p>
@@ -75,8 +28,8 @@
 </section>
 <section id="Entités-Clés-et-Structure-de-Données" class="level2">
     <h2 class="anchored" data-anchor-id="Entités-Clés-et-Structure-de-Données">Entités Clés et Structure de Données</h2>
-    <p>- Classe 'Ordre' : Représente un ordre dans le carnet avec des attributs pour le type d'ordre, le prix, la quantité, et l'identifiant du participant. Cette classe tiendra compte des notions de Tick et Lot pour valider les ordres.</p>
-    <p>- Classe 'CarnetOrdres' : Gère un ensemble d'ordres d'achat et de vente, en permettant leur ajout, leur annulation, et en fournissant une visualisation claire du carnet. Cette classe gérera également la distinction entre les ordres de Makers et de Takers pour simuler l'impact sur la liquidité.</p>
+    <p>- Classe 'CarnetOrdre' : Représente un ordre dans le carnet avec des attributs pour le type d'ordre, la référence de l'actif, le prix et la quantité. </p>
+    <p>- Classe 'CarnetOrdresGUI' : La classe CarnetOrdresGUI est une interface utilisateur pour visualiser et gérer un carnet d'ordres. </p>
 </section>
 <section id="Conclusion-et-Prochaine-Étape" class="level2">
     <h2 class="anchored" data-anchor-id="Conclusion-et-Prochaine-Étape">Conclusion et Prochaine Étape</h2>
