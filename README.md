@@ -100,8 +100,6 @@
     import tkinter.messagebox
     import random
     import time
-    
-    
     class CarnetOrdres:
         def __init__(self, gui):
             self.gui = gui
@@ -319,10 +317,222 @@
     </code></pre>
     </section>
 </section>
+    <section id="Méthode-setup_trees" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-setup_trees">a.Méthode setup_trees</h2>
+        <p>La méthode setup_trees de la classe CarnetOrdresGUI crée une interface pour afficher les ordres d'achat et de vente dans deux tableaux distincts. Elle crée un cadre contenant deux étiquettes "Achat" et "Vente", puis crée deux tableaux d'affichage des ordres d'achat et de vente à gauche et à droite, respectivement. Chaque tableau comporte quatre colonnes : "Ordre", "Référence", "Prix" et "Quantité". Les ordres sont affichés dans ces tableaux avec les détails appropriés. Enfin, elle initialise un objet CarnetOrdres pour gérer les données d'ordres.</p>
+    </section>
+    <pre><code class="language-python">def setup_trees(self):
+        frame = tk.Frame(self.master)
+        frame.pack(side='top', fill=tk.X)
+        # Label "Achat" à gauche
+        tk.Label(frame, text="Achat", font=('Arial', 14)).pack(side='left', padx=10)
+        # Label "Vente" à droite
+        tk.Label(frame, text="Vente", font=('Arial', 14)).pack(side='right', padx=10)
+        self.tree_achat = ttk.Treeview(frame, columns=('Ordre', 'Référence', 'Prix', 'Quantité'), show='headings')
+        self.tree_achat.pack(side='left', fill=tk.BOTH, expand=True)
+        self.tree_vente = ttk.Treeview(frame, columns=('Ordre', 'Référence', 'Prix', 'Quantité'), show='headings')
+        self.tree_vente.pack(side='right', fill=tk.BOTH, expand=True)
+        for tree in (self.tree_achat, self.tree_vente):
+            for col in tree['columns']:
+                tree.heading(col, text=col)
+                tree.column(col, width=100)
+        self.carnet = CarnetOrdres(self)
+    </code></pre>
+    </section>
+ <section id="Méthode-setup_form" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-setup_form">b.Méthode setup_form</h2>
+        <p>La méthode setup_form de la classe CarnetOrdresGUI crée une interface pour saisir de nouveaux ordres. Elle crée un cadre de formulaire contenant des champs pour saisir le type d'ordre, le prix, la quantité et la référence. De plus, elle initialise des variables pour stocker les valeurs saisies dans ces champs. Deux étiquettes "Tick" et "Lot" sont également configurées au-dessus des entrées de formulaire pour afficher ces informations, initialement définies comme "N/A". 
+            Le deuxième bloc de code crée des étiquettes, des champs de saisie et des boutons pour saisir et gérer les ordres dans l'interface utilisateur. Les étiquettes définissent les types d'informations à saisir, comme le type d'ordre (achat/vente), le prix, la quantité et la référence. Les champs de saisie sont associés à des variables qui stockent les valeurs saisies par l'utilisateur. Des boutons sont également ajoutés pour ajouter un nouvel ordre, exécuter les ordres et afficher l'historique des transactions. De plus, un champ de saisie est ajouté pour spécifier la référence utilisée dans le calcul du tick et du lot, avec un bouton pour afficher ces valeurs.
+            Le troisième et quatrième bloc ajoute un champ de saisie pour spécifier le numéro d'ordre à supprimer et des boutons radio pour sélectionner le type d'ordre à supprimer (achat ou vente). Un bouton "Supprimer Ordre" est également ajouté, qui déclenche une fonction pour supprimer l'ordre spécifié en fonction du numéro et du type sélectionnés.
+            Enfin le dernier bloc ajoute un champ de saisie pour spécifier le numéro d'ordre à supprimer et des boutons radio pour sélectionner le type d'ordre à supprimer (achat ou vente). Un bouton "Supprimer Ordre" est également ajouté, qui déclenche une fonction pour supprimer l'ordre spécifié en fonction du numéro et du type sélectionnés.
+</p>
+    </section>
+    <pre><code class="language-python"> def setup_form(self):
+        form_frame = tk.Frame(self.master)
+        form_frame.pack(side='top', fill=tk.X)
+        self.type_ordre_var = tk.StringVar()
+        self.prix_var = tk.StringVar()
+        self.quantite_var = tk.StringVar()
+        self.reference_var = tk.StringVar()
+        # Configuration des labels pour le tick et le lot au-dessus des entrées de formulaire
+        self.tick_label = tk.Label(form_frame, text="Tick: N/A")
+        self.tick_label.grid(row=2, column=3, columnspan=3, sticky='ew')  # Prend toute la largeur
+        self.lot_label = tk.Label(form_frame, text="Lot: N/A")
+        self.lot_label.grid(row=3, column=3, columnspan=3, sticky='ew')  # Prend toute la largeur
+        
+        
+        tk.Label(form_frame, text="Type d'Ordre (Achat/Vente):").grid(row=0, column=0)
+        tk.Entry(form_frame, textvariable=self.type_ordre_var).grid(row=0, column=1)
+        tk.Label(form_frame, text="Prix:").grid(row=1, column=0)
+        tk.Entry(form_frame, textvariable=self.prix_var).grid(row=1, column=1)
+        tk.Label(form_frame, text="Quantité:").grid(row=2, column=0)
+        tk.Entry(form_frame, textvariable=self.quantite_var).grid(row=2, column=1)
+        tk.Label(form_frame, text="Référence:").grid(row=3, column=0)
+        tk.Entry(form_frame, textvariable=self.reference_var).grid(row=3, column=1)
+        tk.Button(form_frame, text="Ajouter Ordre", command=self.ajouter_ordre_new).grid(row=4, column=0, columnspan=2)
+        tk.Button(form_frame, text="Exécuter Ordres", command=self.carnet.executer_ordres).grid(row=5, column=0, columnspan=2)
+        tk.Button(form_frame, text="Historique", command=self.ouvrir_historique).grid(row=6, column=0, columnspan=2)
+         # Ajout d'un champ pour la référence du calcul de tick et lot
+        tk.Label(form_frame, text="Ref pour Tick/Lot:").grid(row=5, column=3)
+        self.ref_tick_lot_var = tk.StringVar()
+        tk.Entry(form_frame, textvariable=self.ref_tick_lot_var).grid(row=5, column=4)
+        tk.Button(form_frame, text="Valeur Tick et Lot", command=self.afficher_tick_lot).grid(row=4, column=4)
+        
+        # Add entry and button for order deletion
+        self.delete_order_var = tk.StringVar()
+        self.order_type_var = tk.StringVar()
+
+        tk.Label(form_frame, text="Numéro d'Ordre à supprimer:").grid(row=7, column=0)
+        tk.Entry(form_frame, textvariable=self.delete_order_var).grid(row=7, column=1)
+
+        # Radiobuttons to select the type of order to delete
+        tk.Radiobutton(form_frame, text="Achat", variable=self.order_type_var, value="achat").grid(row=7, column=2)
+        tk.Radiobutton(form_frame, text="Vente", variable=self.order_type_var, value="vente").grid(row=7, column=3)
+
+        tk.Button(form_frame, text="Supprimer Ordre", command=self.supprimer_ordre).grid(row=7, column=4)
+        
+        # Bouton pour activer/désactiver le mode continu
+        self.continuous_button = tk.Button(form_frame, text="Mode Continu", command=self.toggle_continuous)
+        self.continuous_button.grid(row=1, column=4, columnspan=2)
+        
+        # Ajout des boutons pour générer des ordres Taker et Maker
+        tk.Button(form_frame, text="Générer Ordre Taker", command=self.carnet.generate_taker_order).grid(row=9, column=1)
+        tk.Button(form_frame, text="Générer Ordre Maker", command=self.carnet.generate_maker_order).grid(row=9, column=4)
+
+    </code></pre>
+    </section>
+ <section id="Méthode-toggle_continuous" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-toggle_continuous">c. Méthode toggle_continuous</h2>
+        <p>Cette fonction permet de basculer entre le mode d'exécution continue et le mode d'exécution manuelle des ordres dans l'interface graphique. Lorsque le bouton associé est activé, la fonction vérifie l'état actuel du mode d'exécution automatique dans l'objet carnet. Si le mode automatique est activé, la fonction lance l'exécution continue des ordres à l'aide de la méthode execute_continuously() et met à jour le libellé du bouton pour indiquer qu'il peut être utilisé pour arrêter le mode continu. Si le mode automatique est désactivé, le libellé du bouton est rétabli pour indiquer que le mode continu peut être activé.</p>
+    </section>
+    <pre><code class="language-python"> def toggle_continuous(self):
+        self.carnet.toggle_auto_executing()
+        if self.carnet.auto_executing:
+            self.carnet.execute_continuously()
+            self.continuous_button.config(text="Arrêter Mode Continu")
+        else:
+            self.continuous_button.config(text="Mode Continu")
+    </code></pre>
+    </section>
+ <section id="Méthode-setup_trees" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-setup_trees">a.Méthode setup_trees</h2>
+        <p>La méthode setup_trees de la classe CarnetOrdresGUI crée une interface pour afficher les ordres d'achat et de vente dans deux tableaux distincts. Elle crée un cadre contenant deux étiquettes "Achat" et "Vente", puis crée deux tableaux d'affichage des ordres d'achat et de vente à gauche et à droite, respectivement. Chaque tableau comporte quatre colonnes : "Ordre", "Référence", "Prix" et "Quantité". Les ordres sont affichés dans ces tableaux avec les détails appropriés. Enfin, elle initialise un objet CarnetOrdres pour gérer les données d'ordres.</p>
+    </section>
+    <pre><code class="language-python">def setup_trees(self):
+        frame = tk.Frame(self.master)
+        frame.pack(side='top', fill=tk.X)
+        # Label "Achat" à gauche
+        tk.Label(frame, text="Achat", font=('Arial', 14)).pack(side='left', padx=10)
+        # Label "Vente" à droite
+        tk.Label(frame, text="Vente", font=('Arial', 14)).pack(side='right', padx=10)
+        self.tree_achat = ttk.Treeview(frame, columns=('Ordre', 'Référence', 'Prix', 'Quantité'), show='headings')
+        self.tree_achat.pack(side='left', fill=tk.BOTH, expand=True)
+        self.tree_vente = ttk.Treeview(frame, columns=('Ordre', 'Référence', 'Prix', 'Quantité'), show='headings')
+        self.tree_vente.pack(side='right', fill=tk.BOTH, expand=True)
+        for tree in (self.tree_achat, self.tree_vente):
+            for col in tree['columns']:
+                tree.heading(col, text=col)
+                tree.column(col, width=100)
+        self.carnet = CarnetOrdres(self)
+    </code></pre>
+    </section>
+ <section id="Méthode-supprimer_ordre" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-supprimer_ordre">d.Méthode supprimer_ordre</h2>
+        <p>Cette fonction supprime un ordre spécifié par son numéro d'identification et son type (achat ou vente). Elle récupère d'abord l'identifiant de l'ordre à partir de la variable associée à l'entrée de suppression. Ensuite, en fonction du type d'ordre sélectionné (achat ou vente), elle filtre les listes d'ordres correspondantes dans l'objet carnet, en ne gardant que les ordres dont l'identifiant est différent de celui à supprimer. Enfin, elle met à jour l'affichage du carnet d'ordres dans l'interface graphique en appelant la méthode afficher_carnet(). Un message de confirmation est également affiché pour informer l'utilisateur du succès de l'opération.</p>
+    </section>
+    <pre><code class="language-python">def supprimer_ordre(self):
+        order_id = int(self.delete_order_var.get())
+        order_type = self.order_type_var.get()
+
+        if order_type == "achat":
+            self.carnet.ordres_achat = [ordre for ordre in self.carnet.ordres_achat if ordre['id_ordre'] != order_id]
+        elif order_type == "vente":
+            self.carnet.ordres_vente = [ordre for ordre in self.carnet.ordres_vente if ordre['id_ordre'] != order_id]
+
+        self.afficher_carnet(self.carnet.ordres_achat, self.carnet.ordres_vente)
+        tkinter.messagebox.showinfo("Success", f"Ordre {order_id} supprimé.")
+    </code></pre>
+    </section>
+
+    </section>
+ <section id="Méthode-afficher_tick_et_lot" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-afficher_tick_et_lot">e.Méthode afficher tick et lot</h2>
+        <p>Cette fonction affiche le tick et le lot associés à une référence d'actif spécifiée dans l'interface graphique. Elle récupère d'abord la référence d'actif à partir de la variable associée à l'entrée correspondante. Ensuite, elle utilise la méthode calculer_tick_et_lot() de l'objet carnet pour obtenir les valeurs du tick et du lot pour cette référence d'actif. Enfin, elle met à jour le texte des labels d'affichage du tick et du lot dans l'interface graphique avec ces valeurs.</p>
+    </section>
+    <pre><code class="language-python">def afficher_tick_lot(self):
+        ref_actif = self.ref_tick_lot_var.get()
+        tick, lot = self.carnet.calculer_tick_et_lot(ref_actif)
+        self.tick_label.config(text=f"Tick pour {ref_actif}: {tick}")
+        self.lot_label.config(text=f"Lot pour {ref_actif}: {lot}")
+    </code></pre>
+    </section>
+    </section>
+ <section id="Méthode-ajouter_ordre_new" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-ajouter_ordre_new">f.Méthode-ajouter_ordre_new</h2>
+        <p>Cette fonction tente d'ajouter un nouvel ordre en récupérant les valeurs nécessaires à partir des variables associées aux différents champs du formulaire. Si les valeurs récupérées sont valides, elle génère un nouvel identifiant d'ordre en fonction du nombre d'ordres existants, puis utilise la méthode ajouter_ordre() de l'objet carnet pour ajouter l'ordre. Ensuite, si le mode d'exécution automatique est activé, elle exécute immédiatement les ordres nouvellement ajoutés. En cas d'erreur de valeur lors de la conversion des données d'entrée en nombres, elle affiche une boîte de dialogue d'erreur.</p>
+    </section>
+    <pre><code class="language-python">def ajouter_ordre_new(self):
+        try:
+            type_ordre = self.type_ordre_var.get()
+            prix = float(self.prix_var.get())
+            quantite = int(self.quantite_var.get())
+            reference = self.reference_var.get()
+            id_ordre = len(self.carnet.ordres_achat) + len(self.carnet.ordres_vente) + 1
+            self.carnet.ajouter_ordre(type_ordre, id_ordre, reference, prix, quantite)
+            # Après l'ajout d'un nouvel ordre, tester s'il faut exécuter les ordres
+            if self.carnet.auto_executing:
+                self.carnet.executer_ordres()
+        except ValueError:
+            tkinter.messagebox.showerror("Erreur", "Veuillez entrer des valeurs valides.")
+    </code></pre>
+    </section>
+        </section>
+ <section id="Méthode-afficher_carnet" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-afficher_carnet">g.Méthode afficher_carnet</h2>
+        <p>Cette fonction met à jour l'affichage du carnet d'ordres en supprimant tous les éléments existants dans les arbres de visualisation des ordres d'achat et de vente, puis en insérant les nouvelles données d'ordres fournies dans les arguments ordres_achat et ordres_vente. Chaque ordre est représenté par une ligne dans l'arbre correspondant, affichant les détails tels que l'identifiant de l'ordre, la référence de l'actif, le prix et la quantité.</p>
+    </section>
+    <pre><code class="language-python"> def afficher_carnet(self, ordres_achat, ordres_vente):
+        for tree in (self.tree_achat, self.tree_vente):
+            tree.delete(*tree.get_children())
+        for ordre in ordres_achat:
+            self.tree_achat.insert('', 'end', values=(ordre['id_ordre'], ordre['ref_actif'], ordre['prix'], ordre['quantite']))
+        for ordre in ordres_vente:
+            self.tree_vente.insert('', 'end', values=(ordre['id_ordre'], ordre['ref_actif'], ordre['prix'], ordre['quantite']))
+    </code></pre>
+    </section>
+ <section id="Méthode-ouvrir_historique" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-ouvrir_historique">h. Méthode-ouvrir_historique</h2>
+        <p>Cette fonction crée une nouvelle fenêtre pour afficher l'historique des transactions. Elle crée un widget Treeview pour afficher les données de l'historique sous forme de tableau. Les colonnes du tableau représentent les détails de chaque transaction, tels que les identifiants d'achat et de vente, la référence, le prix et la quantité. Les données sont extraites de l'attribut transactions de l'objet CarnetOrdres associé.</p>
+    </section>
+    <pre><code class="language-python"> def ouvrir_historique(self):
+        history_window = tk.Toplevel(self.master)
+        history_window.title("Historique des Transactions")
+        tree = ttk.Treeview(history_window, columns=('Achat ID', 'Vente ID', 'Référence', 'Prix', 'Quantité'), show='headings')
+        tree.pack(expand=True, fill=tk.BOTH)
+        for col in tree['columns']:
+            tree.heading(col, text=col)
+            tree.column(col, width=100)
+        for transaction in self.carnet.transactions:
+            tree.insert('', 'end', values=(transaction['achat_id'], transaction['vente_id'], transaction['ref_actif'], transaction['prix'], transaction['quantite']))
+    </code></pre>
+    </section>
+<section id="Méthode-Initialisation-Interface" class="level1">
+        <h2 class="anchored" data-anchor-id="Méthode-Initialisation-Interface">Méthode Initialisation Interface</h2>
+        <p>Cette fonction initialise l'interface graphique en créant une instance de la classe tk.Tk() pour la fenêtre principale. Ensuite, elle crée une instance de CarnetOrdresGUI, la classe qui gère l'interface graphique de l'application. Enfin, elle démarre la boucle principale de l'interface graphique avec la méthode mainloop() de l'objet racine (root). La condition if __name__ == '__main__': garantit que le script est exécuté en tant que programme principal.</p>
+    </section>
+    <pre><code class="language-python"> def main():
+    root = tk.Tk()
+    app = CarnetOrdresGUI(root)
+    root.mainloop()
+
+if __name__ == '__main__':
+    main()
+    </code></pre>
+    </section>
 </div>
 
 <div class="footer">
-    Projet Carnet d'Ordre - Développé par [Votre Nom]
+    Projet Carnet d'Ordre - Développé par Alban Hoerdt & Lucien Durand
 </div>
 
 </body>
