@@ -1,5 +1,52 @@
 <!DOCTYPE html>
 <html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet : Carnet d'Ordre</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+            margin: 20px 0;
+        }
+        h1 {
+            font-size: 2em; /* Taille de la police */
+            font-weight: bold; /* Gras */
+            color: #0056b3; /* Couleur bleue */
+        }
+        h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+        p, ul {
+            line-height: 1.6;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #777;
+        }
+    </style>
+</head>
 <body>
 <div class="container">
          <section id="Projet-creation-dun-carnet-dordre" class="level1">
@@ -35,10 +82,8 @@
           <p>La prochaine étape consistera à détailler le développement de la classe CarnetOrdres et à simuler son fonctionnement dans un environnement de marché.</p>
       </section>
       </section>
-      
       <section id="Développement-de-la-Classe-CarnetOrdres" class="level1">
           <h1>Développement de la Classe CarnetOrdres</h1>
-          <hr>
           <section id="Structure-de-la-Classe" class="level2">
               <h2 class="anchored" data-anchor-id="Structure-de-la-Classe">a. Structure de la Classe</h2>
               <p>La classe CarnetOrdres sera structurée pour gérer efficacement les ordres d'achat et de vente. Cette partie du code crée la classe CarnetOrdres, qui est le cœur de notre application de gestion des ordres. Lors de son initialisation, elle établit une connexion avec l'interface utilisateur (self.gui) pour permettre une interaction fluide entre la logique métier et l'interface graphique. Les variables self.ordres_achat et self.ordres_vente servent à stocker respectivement les ordres d'achat et de vente. Ces listes sont des conteneurs pour les données des ordres, telles que leur prix, leur quantité et leur identifiant. La liste self.transactions est destinée à enregistrer les transactions effectuées sur le marché. Chaque transaction est représentée sous forme de dictionnaire, capturant des détails tels que l'identifiant de l'ordre d'achat et de vente, ainsi que le prix et la quantité échangés. L'appel à self.lire_ordres(...) suggère l'existence d'une fonction pour charger les données initiales du carnet d'ordres à partir d'un fichier. Cela garantit que le carnet d'ordres est prérempli avec des données significatives au démarrage de l'application. Enfin, self.auto_executing est un indicateur booléen qui contrôle le mode continu de l'application. Lorsqu'il est activé, les ordres sont automatiquement exécutés à intervalles réguliers, offrant une fonctionnalité essentielle pour les traders qui souhaitent automatiser leurs transactions. </p>
@@ -84,8 +129,7 @@
           </code></pre>
           </section>
       </section>
-<div class="container">
-       <section id="lecture-des-ordres" class="level2">
+<section id="lecture-des-ordres" class="level2">
            <h1>Lecture des ordres</h1>
            <hr>
            <section id="methode-lire_ordres" class="level2">
@@ -108,7 +152,6 @@
        </section>
        <section id="generation-des-taker-et-des-order" class="level2">
            <h1>Génération des taker et des order</h1>
-           <hr>
            <section id="methode-taker" class="level2">
                <h2 class="anchored" data-anchor-id="methode-taker">a. Méthode taker</h2>
                <p>La méthode generate_taker_order crée des ordres de type "taker" de manière aléatoire pour simuler des transactions sur le marché. Elle choisit aléatoirement une référence d'actif parmi une liste prédéfinie et détermine aléatoirement si l'ordre sera un achat ou une vente. Si c'est un achat et qu'il existe des ordres de vente disponibles, il fixe le prix d'achat légèrement au-dessus du minimum du marché et génère une quantité aléatoire. Ensuite, il ajoute cet ordre au carnet d'ordres. Si le mode d'exécution automatique est activé, il exécute immédiatement les ordres ajoutés. De même, s'il s'agit d'une vente et qu'il existe des ordres d'achat disponibles, il fixe le prix de vente légèrement en dessous du maximum du marché et génère une quantité aléatoire, puis ajoute cet ordre au carnet d'ordres. Encore une fois, s'il est en mode d'exécution automatique, il exécute immédiatement les ordres ajoutés. Cette méthode simule la prise de décision aléatoire des acteurs sur le marché et leur interaction en générant des ordres de taker basés sur des conditions aléatoires prédéfinies.</p>
@@ -472,10 +515,10 @@
             <p>- **Gestion des données** : Les données des ordres et des transactions sont stockées dans des structures de données appropriées, et les transactions sont enregistrées pour consultation ultérieure.<p>
             <p>En conclusion, ce projet fournit une base solide pour une application de trading simplifiée. Il pourrait être étendu avec des fonctionnalités supplémentaires telles que la gestion des utilisateurs, l'authentification, la visualisation graphique des données, etc., pour en faire une solution plus complète et robuste.</p>
                 </section>
-         </div>
-         <div class="footer">
-            Projet Carnet d'Ordre - Développé par Alban Hoerdt & Lucien Durand
-         </div>
+</div>
+<div class="footer">
+         Projet Carnet d'Ordre - Développé par Alban Hoerdt & Lucien Durand
+</div>
 
 </body>
 </html>
