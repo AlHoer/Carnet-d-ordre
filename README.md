@@ -473,10 +473,9 @@
             <p>En conclusion, ce projet fournit une base solide pour une application de trading simplifiée. Il pourrait être étendu avec des fonctionnalités supplémentaires telles que la gestion des utilisateurs, l'authentification, la visualisation graphique des données, etc., pour en faire une solution plus complète et robuste.</p>
                 </section>
          </div>
-
-<div class="footer">
-   Projet Carnet d'Ordre - Développé par Alban Hoerdt & Lucien Durand
-</div>
+         <div class="footer">
+            Projet Carnet d'Ordre - Développé par Alban Hoerdt & Lucien Durand
+         </div>
 
 </body>
 </html>
