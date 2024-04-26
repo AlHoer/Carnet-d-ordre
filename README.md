@@ -312,7 +312,7 @@
             </section>
         </section>
         <section id="methode-setup_trees" class="level2">
-            <h2 class="anchored" data-anchor-id="methode-setup_trees">a.Méthode setup_trees</h2>
+            <h2 class="anchored" data-anchor-id="methode-setup_trees">a. Méthode setup_trees</h2>
             <p>La méthode setup_trees de la classe CarnetOrdresGUI crée une interface pour afficher les ordres d'achat et de vente dans deux tableaux distincts. Elle crée un cadre contenant deux étiquettes "Achat" et "Vente", puis crée deux tableaux d'affichage des ordres d'achat et de vente à gauche et à droite, respectivement. Chaque tableau comporte quatre colonnes : "Ordre", "Référence", "Prix" et "Quantité". Les ordres sont affichés dans ces tableaux avec les détails appropriés. Enfin, elle initialise un objet CarnetOrdres pour gérer les données d'ordres.</p>
             <pre><code class="language-python">def setup_trees(self):
     frame = tk.Frame(self.master)
@@ -333,7 +333,7 @@
     </code></pre>
         </section>
         <section id="methode-setup_form" class="level2">
-            <h2 class="anchored" data-anchor-id="methode-setup_form">b.Méthode setup_form</h2>
+            <h2 class="anchored" data-anchor-id="methode-setup_form">b. Méthode setup_form</h2>
             <p>La méthode setup_form de la classe CarnetOrdresGUI crée une interface pour saisir de nouveaux ordres. Elle crée un cadre de formulaire contenant des champs pour saisir le type d'ordre, le prix, la quantité et la référence. De plus, elle initialise des variables pour stocker les valeurs saisies dans ces champs. Deux étiquettes "Tick" et "Lot" sont également configurées au-dessus des entrées de formulaire pour afficher ces informations, initialement définies comme "N/A". 
                 Le deuxième bloc de code crée des étiquettes, des champs de saisie et des boutons pour saisir et gérer les ordres dans l'interface utilisateur. Les étiquettes définissent les types d'informations à saisir, comme le type d'ordre (achat/vente), le prix, la quantité et la référence. Les champs de saisie sont associés à des variables qui stockent les valeurs saisies par l'utilisateur. Des boutons sont également ajoutés pour ajouter un nouvel ordre, exécuter les ordres et afficher l'historique des transactions. De plus, un champ de saisie est ajouté pour spécifier la référence utilisée dans le calcul du tick et du lot, avec un bouton pour afficher ces valeurs.
                 Le troisième et quatrième bloc ajoute un champ de saisie pour spécifier le numéro d'ordre à supprimer et des boutons radio pour sélectionner le type d'ordre à supprimer (achat ou vente). Un bouton "Supprimer Ordre" est également ajouté, qui déclenche une fonction pour supprimer l'ordre spécifié en fonction du numéro et du type sélectionnés.
@@ -406,7 +406,7 @@
 </code></pre>
         </section>
         <section id="methode-setup_trees" class="level2">
-            <h2 class="anchored" data-anchor-id="methode-setup_trees">a.Méthode setup_trees</h2>
+            <h2 class="anchored" data-anchor-id="methode-setup_trees">a. Méthode setup_trees</h2>
             <p>La méthode setup_trees de la classe CarnetOrdresGUI crée une interface pour afficher les ordres d'achat et de vente dans deux tableaux distincts. Elle crée un cadre contenant deux étiquettes "Achat" et "Vente", puis crée deux tableaux d'affichage des ordres d'achat et de vente à gauche et à droite, respectivement. Chaque tableau comporte quatre colonnes : "Ordre", "Référence", "Prix" et "Quantité". Les ordres sont affichés dans ces tableaux avec les détails appropriés. Enfin, elle initialise un objet CarnetOrdres pour gérer les données d'ordres.</p>
             <pre><code class="language-python">def setup_trees(self):
     frame = tk.Frame(self.master)
@@ -427,7 +427,7 @@
 </code></pre>
         </section>
         <section id="methode-supprimer_ordre" class="level2">
-            <h2 class="anchored" data-anchor-id="methode-supprimer_ordre">d.Méthode supprimer_ordre</h2>
+            <h2 class="anchored" data-anchor-id="methode-supprimer_ordre">d. Méthode supprimer_ordre</h2>
             <p>Cette fonction supprime un ordre spécifié par son numéro d'identification et son type (achat ou vente). Elle récupère d'abord l'identifiant de l'ordre à partir de la variable associée à l'entrée de suppression. Ensuite, en fonction du type d'ordre sélectionné (achat ou vente), elle filtre les listes d'ordres correspondantes dans l'objet carnet, en ne gardant que les ordres dont l'identifiant est différent de celui à supprimer. Enfin, elle met à jour l'affichage du carnet d'ordres dans l'interface graphique en appelant la méthode afficher_carnet(). Un message de confirmation est également affiché pour informer l'utilisateur du succès de l'opération.</p>
             <pre><code class="language-python">def supprimer_ordre(self):
     order_id = int(self.delete_order_var.get())
@@ -444,7 +444,7 @@
         </section>
         </section>
         <section id="methode-afficher_tick_et_lot" class="level2">
-            <h2 class="anchored" data-anchor-id="methode-afficher_tick_et_lot">e.Méthode afficher tick et lot</h2>
+            <h2 class="anchored" data-anchor-id="methode-afficher_tick_et_lot">e. Méthode afficher tick et lot</h2>
             <p>Cette fonction affiche le tick et le lot associés à une référence d'actif spécifiée dans l'interface graphique. Elle récupère d'abord la référence d'actif à partir de la variable associée à l'entrée correspondante. Ensuite, elle utilise la méthode calculer_tick_et_lot() de l'objet carnet pour obtenir les valeurs du tick et du lot pour cette référence d'actif. Enfin, elle met à jour le texte des labels d'affichage du tick et du lot dans l'interface graphique avec ces valeurs.</p>
             <pre><code class="language-python">def afficher_tick_lot(self):
     ref_actif = self.ref_tick_lot_var.get()
@@ -455,7 +455,7 @@
         </section>
         </section>
         <section id="methode-ajouter_ordre_new" class="level2">
-            <h2 class="anchored" data-anchor-id="methode-ajouter_ordre_new">f.Méthode-ajouter_ordre_new</h2>
+            <h2 class="anchored" data-anchor-id="methode-ajouter_ordre_new">f. Méthode-ajouter_ordre_new</h2>
             <p>Cette fonction tente d'ajouter un nouvel ordre en récupérant les valeurs nécessaires à partir des variables associées aux différents champs du formulaire. Si les valeurs récupérées sont valides, elle génère un nouvel identifiant d'ordre en fonction du nombre d'ordres existants, puis utilise la méthode ajouter_ordre() de l'objet carnet pour ajouter l'ordre. Ensuite, si le mode d'exécution automatique est activé, elle exécute immédiatement les ordres nouvellement ajoutés. En cas d'erreur de valeur lors de la conversion des données d'entrée en nombres, elle affiche une boîte de dialogue d'erreur.</p>
             <pre><code class="language-python">def ajouter_ordre_new(self):
     try:
@@ -474,7 +474,7 @@
         </section>
             </section>
         <section id="methode-afficher_carnet" class="level2">
-            <h2 class="anchored" data-anchor-id="methode-afficher_carnet">g.Méthode afficher_carnet</h2>
+            <h2 class="anchored" data-anchor-id="methode-afficher_carnet">g. Méthode afficher_carnet</h2>
             <p>Cette fonction met à jour l'affichage du carnet d'ordres en supprimant tous les éléments existants dans les arbres de visualisation des ordres d'achat et de vente, puis en insérant les nouvelles données d'ordres fournies dans les arguments ordres_achat et ordres_vente. Chaque ordre est représenté par une ligne dans l'arbre correspondant, affichant les détails tels que l'identifiant de l'ordre, la référence de l'actif, le prix et la quantité.</p>
             <pre><code class="language-python"> def afficher_carnet(self, ordres_achat, ordres_vente):
     for tree in (self.tree_achat, self.tree_vente):
