@@ -278,7 +278,7 @@
     </code></pre>
         </section>
     </section>
-    <section id="determination-des-tick-et-des-lot" class="level2">
+    <section id="determination-des-tick-et-des-lot" class="level3">
         <h1>Détermination des ticks et des lots</h1>
         <hr>
         <section id="methode-calculer_tick_et_lot" class="level3">
@@ -298,7 +298,7 @@
         </section>
 
       
-<section id="seconde-classe-carnetordresgui" class="level0">
+<section id="seconde-classe-carnetordresgui" class="level1">
             <h2 class="anchored" data-anchor-id="seconde-classe-carnetordresgui"> Seconde Classe CarnetOrdresGUI</h2>
             <p>Dans la seconde classe CarnetOrdresGUI nous allons créer l’interface, en voici un aperçu, nous expliquons dans la suite sa création et son utilisation.</p>
             <img width="495" alt="Capture d’écran 2024-04-26 à 20 28 33" src="https://github.com/AlHoer/Carnet-d-ordre/assets/163281343/1663689a-e5c4-43ba-9aae-a94b4194f673">
