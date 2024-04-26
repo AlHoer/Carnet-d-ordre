@@ -1,55 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet : Carnet d'Ordre</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,.1);
-            margin: 20px 0;
-        }
-        h1 {
-            font-size: 2em; /* Taille de la police */
-            font-weight: bold; /* Gras */
-            color: #0056b3; /* Couleur bleue */
-        }
-        h2 {
-            border-bottom: 2px solid #eee;
-            padding-bottom: 5px;
-        }
-        p, ul {
-            line-height: 1.6;
-        }
-        ul {
-            padding-left: 20px;
-        }
-        code {
-            background-color: #eee;
-            padding: 2px 4px;
-            border-radius: 4px;
-            font-family: monospace;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.8em;
-            color: #777;
-        }
-    </style>
-</head>
 <body>
 <div class="container">
-         <section id="Projet-creation-dun-carnet-dordre" class="level1">
+    <section id="Projet-creation-dun-carnet-dordre" class="level1">
       <h1>Projet : Création d'un carnet d'ordre</h1>
       <hr>
       <section id="Analyse-et-Conception" class="level1">
@@ -205,13 +158,11 @@
                <p>La méthode ajouter_ordre gère l'ajout d'un nouvel ordre au carnet d'ordres. Elle prend en paramètres le type d'ordre (achat ou vente), l'identifiant de l'ordre, la référence de l'actif, le prix et la quantité. Avant d'ajouter l'ordre, elle normalise le type d'ordre en le mettant en minuscules. Ensuite, elle détermine le numéro d'ordre suivant en trouvant le maximum des identifiants d'ordres existants dans les listes d'ordres d'achat et de vente, puis elle incrémente ce numéro. Si la quantité de l'ordre est supérieure à zéro, elle crée un dictionnaire représentant l'ordre avec les détails fournis. Selon le type d'ordre, elle ajoute cet ordre à la liste appropriée (achat ou vente), trie ensuite les listes par identifiant d'ordre, et met à jour l'affichage du carnet d'ordres dans l'interface graphique. Cette méthode assure donc l'ajout correct et la mise à jour des ordres dans le carnet d'ordres, maintenant ainsi une représentation précise et à jour de l'état du marché.</p>
                <pre><code class="language-python"> def ajouter_ordre(self, type_ordre, id_ordre, ref_actif, prix, quantite):
        type_ordre = type_ordre.lower()
-   
        max_order_number = max(
            max((ordre['id_ordre'] for ordre in self.ordres_achat), default=0),
            max((ordre['id_ordre'] for ordre in self.ordres_vente), default=0)
        )
        next_order_number = max_order_number + 1
-   
        if quantite > 0:
            ordre = {'type': type_ordre, 'id_ordre': next_order_number, 'ref_actif': ref_actif, 'prix': prix, 'quantite': quantite}
            if type_ordre == 'achat':
@@ -344,8 +295,7 @@
        self.tick_label.grid(row=2, column=3, columnspan=3, sticky='ew')  # Prend toute la largeur
        self.lot_label = tk.Label(form_frame, text="Lot: N/A")
        self.lot_label.grid(row=3, column=3, columnspan=3, sticky='ew')  # Prend toute la largeur
-       
-       
+        #
        tk.Label(form_frame, text="Type d'Ordre (Achat/Vente):").grid(row=0, column=0)
        tk.Entry(form_frame, textvariable=self.type_ordre_var).grid(row=0, column=1)
        tk.Label(form_frame, text="Prix:").grid(row=1, column=0)
@@ -362,24 +312,18 @@
        self.ref_tick_lot_var = tk.StringVar()
        tk.Entry(form_frame, textvariable=self.ref_tick_lot_var).grid(row=5, column=4)
        tk.Button(form_frame, text="Valeur Tick et Lot", command=self.afficher_tick_lot).grid(row=4, column=4)
-       
        # Add entry and button for order deletion
        self.delete_order_var = tk.StringVar()
        self.order_type_var = tk.StringVar()
-   
        tk.Label(form_frame, text="Numéro d'Ordre à supprimer:").grid(row=7, column=0)
        tk.Entry(form_frame, textvariable=self.delete_order_var).grid(row=7, column=1)
-   
        # Radiobuttons to select the type of order to delete
        tk.Radiobutton(form_frame, text="Achat", variable=self.order_type_var, value="achat").grid(row=7, column=2)
        tk.Radiobutton(form_frame, text="Vente", variable=self.order_type_var, value="vente").grid(row=7, column=3)
-   
        tk.Button(form_frame, text="Supprimer Ordre", command=self.supprimer_ordre).grid(row=7, column=4)
-       
        # Bouton pour activer/désactiver le mode continu
        self.continuous_button = tk.Button(form_frame, text="Mode Continu", command=self.toggle_continuous)
        self.continuous_button.grid(row=1, column=4, columnspan=2)
-       
        # Ajout des boutons pour générer des ordres Taker et Maker
        tk.Button(form_frame, text="Générer Ordre Taker", command=self.carnet.generate_taker_order).grid(row=9, column=1)
        tk.Button(form_frame, text="Générer Ordre Maker", command=self.carnet.generate_maker_order).grid(row=9, column=4)
@@ -425,12 +369,10 @@
                <pre><code class="language-python">def supprimer_ordre(self):
        order_id = int(self.delete_order_var.get())
        order_type = self.order_type_var.get()
-   
        if order_type == "achat":
            self.carnet.ordres_achat = [ordre for ordre in self.carnet.ordres_achat if ordre['id_ordre'] != order_id]
        elif order_type == "vente":
            self.carnet.ordres_vente = [ordre for ordre in self.carnet.ordres_vente if ordre['id_ordre'] != order_id]
-   
        self.afficher_carnet(self.carnet.ordres_achat, self.carnet.ordres_vente)
        tkinter.messagebox.showinfo("Success", f"Ordre {order_id} supprimé.")
    </code></pre>
@@ -516,6 +458,7 @@
             <p>En conclusion, ce projet fournit une base solide pour une application de trading simplifiée. Il pourrait être étendu avec des fonctionnalités supplémentaires telles que la gestion des utilisateurs, l'authentification, la visualisation graphique des données, etc., pour en faire une solution plus complète et robuste.</p>
                 </section>
 </div>
+
 <div class="footer">
          Projet Carnet d'Ordre - Développé par Alban Hoerdt & Lucien Durand
 </div>
