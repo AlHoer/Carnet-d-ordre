@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet Carnet d'Ordre</title>
+    <title> Projet Carnet d'Ordre </title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,7 +56,7 @@
 <section id="a.--Compréhension-Approfondie-des-Carnets-dOrdres" class="level3">
 <h3 class="anchored" data-anchor-id="a.--Compréhension-Approfondie-des-Carnets-dOrdres">a. Compréhension Approfondie des Carnets d'Ordres</h3>
   
-<p>Les carnets d'ordres doivent fonctionner de manière continue, reflétant un environnement dynamique où les participants peuvent à tout moment ajouter ou annuler des ordres. Cette flexibilité est essentielle pour simuler fidèlement le comportement des marchés financiers réels.<p>
+<p> Les carnets d'ordres doivent fonctionner de manière continue, reflétant un environnement dynamique où les participants peuvent à tout moment ajouter ou annuler des ordres. Cette flexibilité est essentielle pour simuler fidèlement le comportement des marchés financiers réels. Le projet que nous avons réalisé a pour but de créer un carnet d’ordres qui va être fonctionnel que cela soit pour stocker, exécuter, chercher ou même créer un ordre d’achat ou de vente. Il contient deux classes principales, la première est celle de la configuration qui va avoir pour objectif de créer un carnet d’ordre et de lui permettre de s’auto-gérer parfaitement. La seconde classe correspond à la création d’une interface qui va permettre à l’utilisateur de gérer directement le carnet d’ordre. Nous allons donc vous expliquer notre code étape par étape <p>
 
 <section id="b.-Mise-en-Avant-des-Concepts-de-Maker-et-Taker" class="level3">
 <h3 class="anchored" data-anchor-id="b.-Mise-en-Avant-des-Concepts-de-Maker-et-Taker">b. Mise en Avant des Concepts de Maker et Taker</h3>  
@@ -75,7 +75,7 @@
     <h2 class="anchored" data-anchor-id="Hypothèses-de-Construction-Révisées">Hypothèses de Construction Révisées</h2>
     <p>1. Continuité et Flexibilité : Le simulateur gérera les ordres de manière continue, permettant à tout moment l'ajout et l'annulation d'ordres pour simuler un environnement de marché dynamique.</p>
     <p>2. Rôles Dynamiques de Maker et Taker : Le simulateur reconnaîtra et distinguera les actions des Makers et des Takers pour refléter leur impact sur la liquidité du marché.</p>
-    <p>3. Respect des Contraintes de Tick et Lot : Les règles concernant les Ticks et les Lots seront intégrées pour s'assurer que les ordres respectent les contraintes de prix et de quantité spécifiques au marché.</p>
+    <p>3. Respect des Contraintes de Tick et Lot : Les règles concernant les Ticks et les Lots sont intégrés à l'aide d'un bouton qui renvoie les valeurs à respecter pour l'utilisateur.</p>
 </section>
 <section id="Entités-Clés-et-Structure-de-Données" class="level2">
     <h2 class="anchored" data-anchor-id="Entités-Clés-et-Structure-de-Données">Entités Clés et Structure de Données</h2>
@@ -93,217 +93,230 @@
     <hr>
     <section id="Structure-de-la-Classe" class="level2">
         <h2 class="anchored" data-anchor-id="Structure-de-la-Classe">a. Structure de la Classe</h2>
-        <p>La classe CarnetOrdres sera structurée pour gérer efficacement les ordres d'achat et de vente, en prenant en compte les contraintes de marché telles que les ticks et les lots.</p>
+        <p>La classe CarnetOrdres sera structurée pour gérer efficacement les ordres d'achat et de vente. Cette partie du code crée la classe CarnetOrdres, qui est le cœur de notre application de gestion des ordres. Lors de son initialisation, elle établit une connexion avec l'interface utilisateur (self.gui) pour permettre une interaction fluide entre la logique métier et l'interface graphique. Les variables self.ordres_achat et self.ordres_vente servent à stocker respectivement les ordres d'achat et de vente. Ces listes sont des conteneurs pour les données des ordres, telles que leur prix, leur quantité et leur identifiant. La liste self.transactions est destinée à enregistrer les transactions effectuées sur le marché. Chaque transaction est représentée sous forme de dictionnaire, capturant des détails tels que l'identifiant de l'ordre d'achat et de vente, ainsi que le prix et la quantité échangés. L'appel à self.lire_ordres(...) suggère l'existence d'une fonction pour charger les données initiales du carnet d'ordres à partir d'un fichier. Cela garantit que le carnet d'ordres est prérempli avec des données significatives au démarrage de l'application. Enfin, self.auto_executing est un indicateur booléen qui contrôle le mode continu de l'application. Lorsqu'il est activé, les ordres sont automatiquement exécutés à intervalles réguliers, offrant une fonctionnalité essentielle pour les traders qui souhaitent automatiser leurs transactions. </p>
         <pre><code class="language-python">class CarnetOrdres:
-    def __init__(self, valeur_tick, taille_contrat, taille_lot=100):
-        self.ordres_achat = []  # Liste pour stocker les ordres d'achat
-        self.ordres_vente = []  # Liste pour stocker les ordres de vente
-        self.valeur_tick = valeur_tick
-        self.taille_contrat = taille_contrat
-        self.taille_lot = taille_lot  # Taille standard du lot, par défaut 100 pour les actions
-
-    def ajouter_ordre(self, type_ordre, prix, quantite, participant):
-        # Vérification de la validité du prix et de la quantité en fonction des ticks et des lots
-        if quantite % self.taille_lot != 0:
-            raise ValueError("La quantité doit être un multiple de la taille du lot")
-        if (prix * self.taille_contrat) % self.valeur_tick != 0:
-            raise ValueError("Le prix doit respecter la valeur du tick")
-        
-        ordre = {"type": type_ordre, "prix": prix, "quantite": quantite, "participant": participant}
-        if type_ordre == "achat":
-            self.ordres_achat.append(ordre)
-            self.ordres_achat.sort(key=lambda x: x['prix'], reverse=True)
-        else:  # Supposé "vente"
-            self.ordres_vente.append(ordre)
-            self.ordres_vente.sort(key=lambda x: x['prix'])
-
-    def annuler_ordre(self, participant, prix, type_ordre):
-        # Mécanisme pour annuler un ordre spécifique basé sur le participant et le prix
-        if type_ordre == "achat":
-            self.ordres_achat = [ordre for ordre in self.ordres_achat if not (ordre['participant'] == participant and ordre['prix'] == prix)]
-        else:  # Supposé "vente"
-            self.ordres_vente = [ordre for ordre in self.ordres_vente if not (ordre['participant'] == participant and ordre['prix'] == prix)]
+       import tkinter as tk
+    from tkinter import ttk
+    import tkinter.messagebox
+    import random
+    import time
+    
+    
+    class CarnetOrdres:
+        def __init__(self, gui):
+            self.gui = gui
+            self.ordres_achat = []
+            self.ordres_vente = []
+            self.transactions = []
+            self.lire_ordres('/Users/albanhoerdt/Documents/Cours Dauphine/L3/S2/Python/Projet/Donnees_OrderBook')
+            self.auto_executing = False  # Variable pour activer/désactiver le mode continu
 </code></pre>
     </section>
     <section id="Gestion-des-Ordres" class="level2">
         <h2 class="anchored" data-anchor-id="Gestion-des-Ordres">b. Gestion des Ordres</h2>
-        <p>La gestion des ordres intègre les contraintes de tick et de lots pour s'assurer que chaque ordre ajouté ou annulé respecte les règles du marché. Les ordres sont triés en fonction de leur prix de manière à refléter les priorités du marché (prix décroissant pour les achats et croissant pour les ventes).</p>
+        <p>Cette fonction, toggle_auto_executing, est une pièce essentielle de notre application de gestion des ordres. Voici un résumé de son fonctionnement. Elle permet de basculer entre l'activation et la désactivation du mode d'exécution automatique des ordres. Lorsqu'elle est appelée, elle inverse simplement l'état actuel du mode automatique en basculant la valeur de self.auto_executing. Si le mode était activé, il serait désactivé et vice versa. Si le mode automatique est activé (self.auto_executing est True), la fonction effectue deux actions importantes. Elle appelle self.execute_continuously(), une méthode chargée d'exécuter les ordres en continu à intervalles réguliers, assurant ainsi que les transactions sont traitées en temps réel. Elle lance également immédiatement self.generate_orders_periodically(), une méthode destinée à démarrer la génération périodique de nouveaux ordres. Cela peut être utile pour assurer un flux constant d'ordres dans l'application. En revanche, si le mode automatique est désactivé, la fonction ne prend aucune action supplémentaire, mais elle pourrait être étendue à l'avenir pour inclure des fonctionnalités d'arrêt du processus, comme indiqué par le commentaire.</p>
     </section>
-    <section id="Affichage-du-Carnet" class="level2">
-        <h2 class="anchored" data-anchor-id="Affichage-du-Carnet">c. Affichage du Carnet</h2>
-        <pre><code class="language-python">def afficher_carnet(self):
-    print("Carnet d'ordres: Achats")
-    for ordre in self.ordres_achat:
-        print(f"Participant: {ordre['participant']}, Prix: {ordre['prix']}, Quantité: {ordre['quantite']}")
-    print("Carnet d'ordres: Ventes")
-    for ordre in self.ordres_vente:
-        print(f"Participant: {ordre['participant']}, Prix: {ordre['prix']}, Quantité: {ordre['quantite']}")
+    <section id="Activation-mode-continu" class="level2">
+        <h2 class="anchored" data-anchor-id="Activation-mode-continu">c. Activation mode continu </h2>
+        <pre><code class="language-python"> def toggle_auto_executing(self):
+        self.auto_executing = not self.auto_executing
+        if self.auto_executing:
+            self.execute_continuously()
+            self.generate_orders_periodically()  # Appel immédiat pour démarrer la génération des ordres
+        else:
+            # Ajouter des mesures pour arrêter le processus si nécessaire
+            pass
 </code></pre>
     </section>
-    <section id="Résumé" class="level2">
-        <h2 class="anchored" data-anchor-id="Résumé">Résumé</h2>
-        <p>La classe CarnetOrdres est désormais conçue pour intégrer les notions de tick et de lot, garantissant que les ordres respectent les contraintes du marché. La possibilité d'ajouter et d'annuler des ordres de manière flexible permet de simuler un environnement de marché dynamique et continu. L'affichage du carnet offre une vue claire des ordres d'achat et de vente, facilitant la compréhension de la dynamique du marché.</p>
+    <section id="Méthode-continu" class="level3">
+        <h2 class="anchored" data-anchor-id="Méthode-continu">Méthode continu</h2>
+        <p>On a ensuite la méthode, execute_continuously, assure une exécution continue des ordres à intervalles réguliers tant que le mode d'exécution automatique est activé. Elle vérifie d'abord si le mode automatique est activé. Si tel est le cas, elle lance l'exécution des ordres en appelant la méthode executer_ordres(). Ensuite, elle utilise self.gui.master.after(1000, self.execute_continuously) pour planifier un rappel de la méthode après une seconde (1000 millisecondes), assurant ainsi une exécution périodique des ordres. Ce processus se poursuit tant que le mode automatique reste activé, garantissant un flux continu d'activité de trading dans notre application.</p>
+    <pre><code class="language-python">def execute_continuously(self):
+        if self.auto_executing:
+            self.executer_ordres()
+            self.gui.master.after(1000, self.execute_continuously)
+    </code></pre>
     </section>
 </section>
 
-<section id="Simulation-du-marché" class="level1">
-    <h1>Simulation du marché</h1>
+<section id="Lecture-des-ordres" class="level2">
+    <h1>Lecture des ordres</h1>
     <hr>
-    <section id="Génération-de-Données-de-Simulation" class="level2">
-        <h2 class="anchored" data-anchor-id="Génération-de-Données-de-Simulation">a. Génération de Données de Simulation</h2>
-        <p>Pour générer des données de simulation, nous définirons un ensemble d'ordres d'achat et de vente avec des prix, des quantités et des participants variés. Ces données serviront à tester le fonctionnement du carnet d'ordres dans différents scénarios.</p>
+    <section id="Méthode-lire_ordres" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-lire_ordres">a. Méthode lire_ordres</h2>
+        <p>La méthode lire_ordres est une fonction clé de notre système de gestion d'ordres. Elle ouvre le fichier spécifié, parcourt ses lignes et extrait les détails de chaque ordre, limitant la lecture à 40 ordres maximum. Pour chaque ligne, elle détermine le type d'ordre (achat ou vente), l'identifiant, la référence de l'actif, le prix et la quantité. Ces données sont utilisées pour ajouter les ordres au carnet d'ordres via la méthode ajouter_ordre, garantissant que l'application démarre avec un ensemble initial d'ordres prêts à être traités. Ainsi, cette méthode assure un chargement efficace des données d'ordres, élément crucial pour le bon fonctionnement de notre système de trading.</p>
     </section>
-    <section id="Boucle-de-Simulation" class="level2">
-        <h2 class="anchored" data-anchor-id="Boucle-de-Simulation">b. Boucle de Simulation</h2>
-        <p>La boucle de simulation itérera à travers les ordres générés, ajoutant et annulant des ordres dans le carnet pour simuler un environnement de marché dynamique.</p>
-        <pre><code class="language-python">import random
-
-# Exemple d'initialisation de la classe CarnetOrdres avec des valeurs fictives pour le tick et le lot
-carnet = CarnetOrdres(valeur_tick=12.5, taille_contrat=50)
-
-# Génération de données de simulation
-participants = ['Trader A', 'Trader B', 'Trader C', 'Trader D']
-types_ordre = ['achat', 'vente']
-prix_base = 100  # Prix de base pour les ordres
-
-# Fonction pour générer des ordres aléatoires
-def generer_ordres_aleatoires(nombre_ordres):
-    for _ in range(nombre_ordres):
-        type_ordre = random.choice(types_ordre)
-        prix = prix_base + random.randint(-10, 10)  # Génère un prix autour du prix de base
-        quantite = random.choice([100, 200, 300])  # Quantité en multiples de 100 (taille du lot)
-        participant = random.choice(participants)
-        
-        # Tentative d'ajouter l'ordre au carnet
-        try:
-            carnet.ajouter_ordre(type_ordre, prix, quantite, participant)
-        except ValueError as e:
-            print(f"Erreur lors de l'ajout de l'ordre : {e}")
-
-# Boucle de simulation
-def simuler_marche():
-    generer_ordres_aleatoires(10)  # Génère et ajoute 10 ordres aléatoires au carnet
-    carnet.afficher_carnet()  # Affiche l'état actuel du carnet après l'ajout des ordres
-
-    # Exemple d'annulation d'un ordre
-    carnet.annuler_ordre(participants[0], prix_base, 'achat')
-    print("\\nCarnet d'ordres après annulation d'un ordre :\\n")
-    carnet.afficher_carnet()
-
-# Exécution de la simulation
-simuler_marche()
-</code></pre>
-        <p>Ce script commence par initialiser le carnet d'ordres avec des paramètres fictifs pour les valeurs de tick et de lot. Ensuite, il génère une série d'ordres d'achat et de vente avec des attributs aléatoires pour simuler différents scénarios de marché. Après l'ajout des ordres, l'état actuel du carnet est affiché. Enfin, un exemple d'annulation d'un ordre est montré pour illustrer comment les ordres peuvent être retirés du carnet, suivi d'une nouvelle visualisation du carnet pour montrer l'impact de l'annulation.</p>
-        <p>Cette simulation est simplifiée et peut être étendue ou modifiée pour inclure des scénarios de marché plus complexes ou pour tester des comportements spécifiques du carnet d'ordres.</p>
+    <section <pre><code class="language-python">def lire_ordres(self, filepath):
+        with open(filepath, 'r') as file:
+            for i, line in enumerate(file):
+                if i >= 40:
+                    break
+                parts = line.strip().split(',')
+                type_ordre = 'achat' if parts[0] == 'B' else 'vente'
+                id_ordre = int(parts[1])
+                ref_actif = parts[2].strip('"')
+                prix = float(parts[3])
+                quantite = int(parts[4]) if len(parts) > 4 else 1
+                self.ajouter_ordre(type_ordre, id_ordre, ref_actif, prix, quantite)
+    </code></pre>
     </section>
 </section>
 
-<section id="Intégration-des-concepts-avancés" class="level1">
-    <h1>Intégration des concepts avancés</h1>
+<section id="Génération-des-taker-et-des-order" class="level2">
+    <h1>Génération des taker et des order</h1>
     <hr>
-    <p>Intégrer les concepts avancés de tick, lot, et les rôles de Maker et Taker dans notre simulateur de carnet d'ordres nécessite d'ajuster la classe CarnetOrdres et de modifier la logique de simulation pour refléter ces aspects. Nous allons maintenant détailler ces intégrations.</p>
-    <section id="Tick-et-Lot" class="level2">
-        <h2 class="anchored" data-anchor-id="Tick-et-Lot">a. Tick et Lot</h2>
-        <p>Nous avons déjà introduit la validation de la quantité par rapport à la taille du lot dans l'ajout d'ordres et la validation du prix en fonction du tick. Ces contrôles assurent que les ordres respectent les règles minimales de mouvement de prix et de quantité d'échange. Cette logique a été intégrée dans la méthode ajouter_ordre de la classe CarnetOrdres.</p>
+    <section id="Méthode-taker" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-taker">a. Méthode taker</h2>
+        <p>La méthode generate_taker_order crée des ordres de type "taker" de manière aléatoire pour simuler des transactions sur le marché. Elle choisit aléatoirement une référence d'actif parmi une liste prédéfinie et détermine aléatoirement si l'ordre sera un achat ou une vente. Si c'est un achat et qu'il existe des ordres de vente disponibles, il fixe le prix d'achat légèrement au-dessus du minimum du marché et génère une quantité aléatoire. Ensuite, il ajoute cet ordre au carnet d'ordres. Si le mode d'exécution automatique est activé, il exécute immédiatement les ordres ajoutés. De même, s'il s'agit d'une vente et qu'il existe des ordres d'achat disponibles, il fixe le prix de vente légèrement en dessous du maximum du marché et génère une quantité aléatoire, puis ajoute cet ordre au carnet d'ordres. Encore une fois, s'il est en mode d'exécution automatique, il exécute immédiatement les ordres ajoutés. Cette méthode simule la prise de décision aléatoire des acteurs sur le marché et leur interaction en générant des ordres de taker basés sur des conditions aléatoires prédéfinies.</p>
     </section>
-    <section id="Rôles-de-Maker-et-Taker" class="level2">
-        <h2 class="anchored" data-anchor-id="Rôles-de-Maker-et-Taker">b. Rôles de Maker et Taker</h2>
-        <p>Pour distinguer entre les ordres de Maker et de Taker, nous devons ajouter une logique supplémentaire pour déterminer si un nouvel ordre peut être immédiatement exécuté contre des ordres existants dans le carnet (Taker) ou s'il doit être ajouté au carnet en attendant un ordre correspondant (Maker).</p>
+    <pre><code class="language-python">def generate_taker_order(self):
+        reference = random.choice(['30501', '31601', '31502'])
+        order_type = random.choice(['achat', 'vente'])
+        if order_type == 'achat' and self.ordres_vente:
+            # Taker achète à un prix légèrement supérieur au minimum du marché
+            prix_achat = max((ordre['prix'] for ordre in self.ordres_vente), default=10) + random.uniform(1, 100)
+            prix_achat = round(prix_achat, 1)
+            quantite_achat = random.randint(1, 2000)
+            self.ajouter_ordre('achat', len(self.ordres_achat) + 1, reference, prix_achat, quantite_achat)
+            if self.auto_executing:  # Exécute les ordres immédiatement si en mode continu
+                self.executer_ordres()
+        elif order_type == 'vente' and self.ordres_achat:
+            # Taker vend à un prix légèrement inférieur au maximum du marché
+            prix_vente = min((ordre['prix'] for ordre in self.ordres_achat), default=10) - random.uniform(1, 100)
+            prix_vente = round(prix_vente, 1)
+            quantite_vente = random.randint(1, 2000)
+            self.ajouter_ordre('vente', len(self.ordres_vente) + 1, reference, prix_vente, quantite_vente)
+            if self.auto_executing:  # Exécute les ordres immédiatement si en mode continu
+                self.executer_ordres()
+    </code></pre>
+    <section id="Méthode-maker" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-maker">b. Méthode maker</h2>
+        <p>La méthode generate_maker_order crée des ordres de type "maker" de manière aléatoire pour simuler des transactions sur le marché, elle est quasiment similaire à la méthode précédente, du moins sur le fonctionnement. Elle sélectionne aléatoirement une référence d'actif parmi une liste prédéfinie et détermine aléatoirement si l'ordre sera un achat ou une vente. Si c'est un achat et qu'il existe des ordres de vente disponibles, elle fixe le prix d'achat légèrement en dessous du minimum du marché et génère une quantité aléatoire. Ensuite, elle ajoute cet ordre au carnet d'ordres. Si le mode d'exécution automatique est activé, elle exécute immédiatement les ordres ajoutés. De même, si c'est une vente et qu'il existe des ordres d'achat disponibles, elle fixe le prix de vente légèrement au-dessus du maximum du marché, génère une quantité aléatoire, puis ajoute cet ordre au carnet d'ordres. Encore une fois, si le mode d'exécution automatique est activé, elle exécute immédiatement les ordres ajoutés. Cette méthode simule le comportement des acteurs du marché qui ajoutent des liquidités en créant des ordres de maker basés sur des conditions aléatoires prédéfinies.</p>
+        <pre><code class="language-python">def generate_maker_order(self):
+        reference = random.choice(['30501', '31601', '31502'])
+        order_type = random.choice(['achat', 'vente'])
+        if order_type == 'achat' and self.ordres_vente:
+            # Maker achète à un prix légèrement inférieur au minimum du marché
+            prix_achat = min((ordre['prix'] for ordre in self.ordres_vente), default=10) - random.uniform(1, 100)
+            prix_achat = round(prix_achat, 1)
+            quantite_achat = random.randint(1, 2000)
+            self.ajouter_ordre('achat', len(self.ordres_achat) + 1, reference, prix_achat, quantite_achat)
+            if self.auto_executing:  # Exécute les ordres immédiatement si en mode continu
+                self.executer_ordres()
+        elif order_type == 'vente' and self.ordres_achat:
+            # Maker vend à un prix légèrement supérieur au maximum du marché
+            prix_vente = max((ordre['prix'] for ordre in self.ordres_achat), default=10) + random.uniform(1, 100)
+            prix_vente = round(prix_vente, 1)
+            quantite_vente = random.randint(1, 2000)
+            self.ajouter_ordre('vente', len(self.ordres_vente) + 1, reference, prix_vente, quantite_vente)
+            if self.auto_executing:  # Exécute les ordres immédiatement si en mode continu
+                self.executer_ordres()
+</code></pre>
     </section>
-    <section id="Modification-de-la-Classe-CarnetOrdres" class="level2">
-        <h2 class="anchored" data-anchor-id="Modification-de-la-Classe-CarnetOrdres">Modification de la Classe CarnetOrdres</h2>
-        <p>Nous ajoutons une méthode executer_si_possible pour essayer d'exécuter immédiatement les ordres entrants contre ceux existants dans le carnet. Si un ordre ne peut être exécuté immédiatement, il est considéré comme un ordre de Maker et est ajouté au carnet.</p>
-        <pre><code class="language-python">class CarnetOrdres:
-    # Initialisation et autres méthodes restent inchangées
+    <section id="Méthode-ajouter_ordre" class="level1">
+        <h2 class="anchored" data-anchor-id="Méthode-ajouter_ordre">Méthode ajouter_ordre</h2>
+        <p>La méthode ajouter_ordre gère l'ajout d'un nouvel ordre au carnet d'ordres. Elle prend en paramètres le type d'ordre (achat ou vente), l'identifiant de l'ordre, la référence de l'actif, le prix et la quantité. Avant d'ajouter l'ordre, elle normalise le type d'ordre en le mettant en minuscules. Ensuite, elle détermine le numéro d'ordre suivant en trouvant le maximum des identifiants d'ordres existants dans les listes d'ordres d'achat et de vente, puis elle incrémente ce numéro. Si la quantité de l'ordre est supérieure à zéro, elle crée un dictionnaire représentant l'ordre avec les détails fournis. Selon le type d'ordre, elle ajoute cet ordre à la liste appropriée (achat ou vente), trie ensuite les listes par identifiant d'ordre, et met à jour l'affichage du carnet d'ordres dans l'interface graphique. Cette méthode assure donc l'ajout correct et la mise à jour des ordres dans le carnet d'ordres, maintenant ainsi une représentation précise et à jour de l'état du marché.</p>
+         <pre><code class="language-python"> def ajouter_ordre(self, type_ordre, id_ordre, ref_actif, prix, quantite):
+        type_ordre = type_ordre.lower()
 
-    def executer_si_possible(self, ordre):
-        opposé = 'vente' if ordre['type'] == 'achat' else 'achat'
-        liste_opposée = self.ordres_vente if opposé == 'vente' else self.ordres_achat
+        max_order_number = max(
+            max((ordre['id_ordre'] for ordre in self.ordres_achat), default=0),
+            max((ordre['id_ordre'] for ordre in self.ordres_vente), default=0)
+        )
+        next_order_number = max_order_number + 1
 
-        for ordre_opposé in liste_opposée:
-            if ordre['type'] == 'achat' and ordre['prix'] >= ordre_opposé['prix'] or \
-               ordre['type'] == 'vente' and ordre['prix'] <= ordre_opposé['prix']:
-                # Logique d'exécution ici (simplifiée pour cet exemple)
-                print(f"Exécution de l'ordre : {ordre} contre {ordre_opposé}")
-                liste_opposée.remove(ordre_opposé)
-                return True
-        return False
-
-    def ajouter_ordre(self, type_ordre, prix, quantite, participant):
-        # Vérifications restent inchangées
-        
-        ordre = {"type": type_ordre, "prix": prix, "quantite": quantite, "participant": participant}
-        
-        # Essayer d'exécuter l'ordre immédiatement
-        if not self.executer_si_possible(ordre):
-            # Si l'ordre n'est pas exécuté, l'ajouter au carnet comme un Maker
-            if type_ordre == "achat":
+        if quantite > 0:
+            ordre = {'type': type_ordre, 'id_ordre': next_order_number, 'ref_actif': ref_actif, 'prix': prix, 'quantite': quantite}
+            if type_ordre == 'achat':
                 self.ordres_achat.append(ordre)
-                self.ordres_achat.sort(key=lambda x: x['prix'], reverse=True)
-            else:  # Supposé "vente"
+                self.ordres_achat.sort(key=lambda x: x['id_ordre'])
+            else:
                 self.ordres_vente.append(ordre)
-                self.ordres_vente.sort(key=lambda x: x['prix'])
-</code></pre>
-        <p>Dans cette logique simplifiée, un ordre est exécuté si un ordre opposé existant peut satisfaire immédiatement son prix. Cette opération simule l'activité de Taker. Si aucun ordre opposé n'est satisfaisant, l'ordre est ajouté au carnet, agissant ainsi comme un Maker.</p>
-    </section>
-    <section id="Conclusion" class="level2">
-        <h2 class="anchored" data-anchor-id="Conclusion">Conclusion</h2>
-        <p>Avec l'intégration de ces concepts avancés, notre simulateur de carnet d'ordres est désormais capable de gérer des aspects cruciaux du trading sur les marchés financiers, y compris les contraintes de tick et de lot, ainsi que la dynamique de liquidité apportée par les rôles de Maker et Taker. Cette approche améliore considérablement la réalité de la simulation, offrant une expérience plus proche des opérations de marché réelles.</p>
+                self.ordres_vente.sort(key=lambda x: x['id_ordre'])
+            self.gui.afficher_carnet(self.ordres_achat, self.ordres_vente)
+         </code></pre>
     </section>
 </section>
 
-<section id="Exemple-dutilisation" class="level1">
-    <h1>Exemple d'utilisation</h1>
+<section id="Exécution-des-ordres" class="level1">
+    <h1>Exécution des ordres</h1>
     <hr>
-    <section id="Créer-un-Exemple-Concret" class="level2">
-        <h2 class="anchored" data-anchor-id="Créer-un-Exemple-Concret">a. Créer un Exemple Concret</h2>
-        <p>Imaginons un scénario de marché simple où différents participants ajoutent, exécutent et annulent des ordres. Ce script illustre l'utilisation de notre classe CarnetOrdres dans ce contexte :</p>
-        <pre><code class="language-python"># Création de l'instance du carnet d'ordres
-carnet = CarnetOrdres(valeur_tick=12.5, taille_contrat=50)
-
-# Ajout d'ordres d'achat et de vente dans le carnet
-carnet.ajouter_ordre("achat", 100, 100, "Trader A")
-carnet.ajouter_ordre("vente", 105, 100, "Trader B")
-carnet.ajouter_ordre("achat", 101, 100, "Trader C")
-carnet.ajouter_ordre("vente", 102, 100, "Trader D")
-
-# Affichage de l'état initial du carnet d'ordres
-print("Carnet d'ordres initial :")
-carnet.afficher_carnet()
-
-# Simulation d'une annulation d'ordre
-carnet.annuler_ordre("Trader A", 100, "achat")
-print("\nCarnet d'ordres après annulation de l'ordre de Trader A :")
-carnet.afficher_carnet()
-
-# Exécution d'un ordre qui correspond à un ordre existant dans le carnet (Taker)
-carnet.ajouter_ordre("achat", 102, 100, "Trader E")
-print("\nCarnet d'ordres après exécution de l'ordre de Trader E :")
-carnet.afficher_carnet()
+    <section id="Méthode-exécution-logique" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-exécution-logique">a. Méthode exécution logique</h2>
+        <p>La méthode executer_ordres_logique prend en charge la logique d'exécution des ordres dans le carnet d'ordres. Elle commence par trier les listes d'ordres d'achat et de vente en fonction du prix, les achats par ordre décroissant et les ventes par ordre croissant. Ensuite, elle parcourt les listes pour trouver les transactions possibles en comparant les prix et les références d'actif des ordres. Si une transaction est possible, elle détermine la quantité à exécuter, enregistre la transaction dans l'historique des transactions, met à jour les quantités des ordres impliqués et supprime les ordres épuisés. Après avoir traité toutes les transactions possibles, elle met à jour l'affichage du carnet d'ordres dans l'interface graphique et ouvre une fenêtre affichant l'historique des transactions. Cette méthode assure l'exécution correcte des ordres en fonction de leur prix et de leur quantité, tout en maintenant un suivi précis des transactions effectuées.</p>
+        <pre><code class="language-python"> def executer_ordres_logique(self):
+        achats = sorted(self.ordres_achat[:], key=lambda x: x['prix'], reverse=True)
+        ventes = sorted(self.ordres_vente[:], key=lambda x: x['prix'])
+        for achat in achats:
+            if achat['quantite'] == 0:
+                continue
+            for vente in ventes:
+                if vente['quantite'] == 0:
+                    continue
+                if achat['ref_actif'] == vente['ref_actif'] and achat['prix'] >= vente['prix']:
+                    quantite_executee = min(achat['quantite'], vente['quantite'])
+                    transaction_prix = vente['prix']
+                    self.transactions.append({
+                        'achat_id': achat['id_ordre'],
+                        'vente_id': vente['id_ordre'],
+                        'prix': transaction_prix,
+                        'quantite': quantite_executee,
+                        'ref_actif': achat['ref_actif']
+                    })
+                    achat['quantite'] -= quantite_executee
+                    vente['quantite'] -= quantite_executee
+                    if vente['quantite'] == 0:
+                        self.ordres_vente.remove(vente)
+                    if achat['quantite'] == 0:
+                        self.ordres_achat.remove(achat)
+                        break
+        self.gui.afficher_carnet(self.ordres_achat, self.ordres_vente)
+        self.gui.ouvrir_historique(self.transactions)
 </code></pre>
     </section>
-    <section id="Tester-et-Valider" class="level2">
-        <h2 class="anchored" data-anchor-id="Tester-et-Valider">b. Tester et Valider</h2>
-        <p>La validation de ce simulateur de carnet d'ordres implique de vérifier qu'il gère correctement les ajouts, exécutions et annulations d'ordres selon les règles définies. Le script d'exemple ci-dessus sert de base pour ces tests, mais des cas de test plus exhaustifs devraient être conçus pour couvrir divers scénarios de marché.</p>
+    <section id="Exécution" class="level2">
+        <h2 class="anchored" data-anchor-id="Exécution">b. Exécution</h2>
+        <p>La méthode executer_ordres est responsable de l'exécution des ordres. Elle commence par appeler la méthode executer_ordres_logique pour gérer la logique d'exécution des ordres. Ensuite, elle met à jour l'affichage du carnet d'ordres dans l'interface graphique en affichant les listes d'ordres d'achat et de vente mises à jour. Enfin, elle ouvre une fenêtre affichant l'historique des transactions. Cette méthode coordonne le processus d'exécution des ordres et assure la mise à jour de l'affichage de l'état du carnet d'ordres et de l'historique des transactions.</p>
+    <pre><code class="language-python">     
+    def executer_ordres(self):
+        self.executer_ordres_logique()
+        self.gui.afficher_carnet(self.ordres_achat, self.ordres_vente)
+        self.gui.ouvrir_historique(self.transactions)
+    </code></pre>
     </section>
 </section>
 
-<section id="Révision-et-amélioration" class="level1">
-    <h1>Révision et amélioration</h1>
+<section id="Détermination-des-tick-et-des-lot" class="level1">
+    <h1>Détermination des ticks et des lots</h1>
     <hr>
-    <section id="Évaluation-de-Performance" class="level2">
-        <h2 class="anchored" data-anchor-id="Évaluation-de-Performance">a. Évaluation de Performance</h2>
-        <p>Tester la performance avec de grands volumes d'ordres est crucial, surtout pour simuler des marchés très liquides. Des outils de profilage de code en Python comme cProfile ou line_profiler peuvent aider à identifier les goulets d'étranglement.</p>
+    <section id="Méthode-calculer_tick_et_lot" class="level2">
+        <h2 class="anchored" data-anchor-id="Méthode-calculer_tick_et_lot">a. Méthode calculer_tick_et_lot</h2>
+        <p>La fonction calculer_tick_et_lot prend en entrée une référence d'actif et cherche ses données de tick et de lot dans un fichier spécifié, ici Donnees_Tick_Lot. Elle ouvre le fichier, parcourt chaque ligne, et sépare les éléments en parties. Si la référence d'actif correspond à celle trouvée dans une ligne du fichier, la fonction extrait les valeurs du tick et du lot associé à cette référence. Ensuite, elle retourne ces valeurs. Si aucune correspondance n'est trouvée, elle retourne "N/A" pour indiquer que les données n'ont pas été trouvées. Cette fonction récupère les informations sur le tick et le lot d'un actif à partir d'un fichier et les renvoie pour utilisation.</p>
+    <pre><code class="language-python"> def calculer_tick_et_lot(self, ref_actif):
+        filepath = "/Users/albanhoerdt/Documents/Cours Dauphine L3/S2/Python/Projet/Donnees_Tick_Lot"
+        with open(filepath, 'r') as file:
+            for line in file:
+                parts = line.strip().split(',')
+                if parts[0] == ref_actif:
+                    lot = float(parts[1])
+                    tick = float(parts[2])
+                    return tick, lot
+        return "N/A", "N/A"
+    </code></pre>
     </section>
-    <section id="Feedback-et-Amélioration" class="level2">
-        <h2 class="anchored" data-anchor-id="Feedback-et-Amélioration">b. Feedback et Amélioration</h2>
-        <p>La phase de feedback est essentielle. Elle peut impliquer :</p>
-        <ul>
-            <li>Des discussions avec des traders ou des utilisateurs potentiels pour comprendre leurs besoins.</li>
-            <li>L'ajout de fonctionnalités demandées, comme des types d'ordres supplémentaires (e.g., ordres stop).</li>
-            <li>L'optimisation du code pour améliorer la performance et l'efficacité.</li>
-        </ul>
-        <p>Ce processus d'itération, basé sur le feedback et l'amélioration continue, est fondamental pour raffiner le simulateur et le rendre plus utile et performant pour ses utilisateurs.</p>
+    <section id="Seconde-Classe-CarnetOrdresGUI" class="level1">
+        <h2 class="anchored" data-anchor-id="Seconde-Classe-CarnetOrdresGUI">b. Seconde Classe CarnetOrdresGUI</h2>
+        <p>Dans la seconde classe CarnetOrdresGUI nous allons créer l’interface, en voici un aperçu, nous expliquons dans la suite sa création et son utilisation.</p>
+        <img width="495" alt="Capture d’écran 2024-04-26 à 20 28 33" src="https://github.com/AlHoer/Carnet-d-ordre/assets/163281343/1663689a-e5c4-43ba-9aae-a94b4194f673">
+     <section id="Code-de-la-Classe-CarnetOrdresGUI" class="level2">
+        <h2 class="anchored" data-anchor-id="Code-de-la-Classe-CarnetOrdresGUI"> Code de la Classe CarnetOrdresGUI</h2>
+    <pre><code class="language-python">class CarnetOrdresGUI:
+    def __init__(self, master):
+        self.master = master
+        master.title("Carnet d'ordres")
+        self.setup_trees()
+        self.setup_form()
+    </code></pre>
     </section>
 </section>
 </div>
