@@ -158,8 +158,8 @@
                self.executer_ordres()
    </code></pre>
            </section>
-           <section id="methode-ajouter_ordre" class="level2">
-               <h2 class="anchored" data-anchor-id="methode-ajouter_ordre">Méthode ajouter_ordre</h2>
+           <section id="methode-ajouter_ordre" class="level1">
+               <h1 class="anchored" data-anchor-id="methode-ajouter_ordre">Méthode ajouter_ordre</h1>
                <p>La méthode ajouter_ordre gère l'ajout d'un nouvel ordre au carnet d'ordres. Elle prend en paramètres le type d'ordre (achat ou vente), l'identifiant de l'ordre, la référence de l'actif, le prix et la quantité. Avant d'ajouter l'ordre, elle normalise le type d'ordre en le mettant en minuscules. Ensuite, elle détermine le numéro d'ordre suivant en trouvant le maximum des identifiants d'ordres existants dans les listes d'ordres d'achat et de vente, puis elle incrémente ce numéro. Si la quantité de l'ordre est supérieure à zéro, elle crée un dictionnaire représentant l'ordre avec les détails fournis. Selon le type d'ordre, elle ajoute cet ordre à la liste appropriée (achat ou vente), trie ensuite les listes par identifiant d'ordre, et met à jour l'affichage du carnet d'ordres dans l'interface graphique. Cette méthode assure donc l'ajout correct et la mise à jour des ordres dans le carnet d'ordres, maintenant ainsi une représentation précise et à jour de l'état du marché.</p>
                <pre><code class="language-python"> def ajouter_ordre(self, type_ordre, id_ordre, ref_actif, prix, quantite):
        type_ordre = type_ordre.lower()
