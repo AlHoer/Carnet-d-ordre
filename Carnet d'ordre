@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet Carnet d'Ordre</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+            margin: 20px 0;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+        p, ul {
+            line-height: 1.6;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+   <section id="creation-dun-carnet-dordre" class="level1">
+<h1>Création d'un carnet d'ordre</h1>
+<hr>
+<section id="1.---Analyse-et-Conception-Révisée" class="level2">
+<h2 class="anchored" data-anchor-id="1.---Analyse-et-Conception-Révisée">1. Analyse et Conception Révisée</h2>
+<section id="a.--Compréhension-Approfondie-des-Carnets-dOrdres" class="level3">
+<h3 class="anchored" data-anchor-id="a.--Compréhension-Approfondie-des-Carnets-dOrdres">a. Compréhension Approfondie des Carnets d'Ordres</h3>
+<p> Les carnets d'ordres doivent fonctionner de manière continue, reflétant un environnement dynamique où les participants peuvent à tout moment ajouter ou annuler des ordres. Cette flexibilité est essentielle pour simuler fidèlement le comportement des marchés financiers réels. Le projet que nous avons réalisé a pour but de créer un carnet d’ordres qui va être fonctionnel que cela soit pour stocker, exécuter, chercher ou même créer un ordre d’achat ou de vente. Il contient deux classes principales, la première est celle de la configuration qui va avoir pour objectif de créer un carnet d’ordre et de lui permettre de s’auto-gérer parfaitement. La seconde classe correspond à la création d’une interface qui va permettre à l’utilisateur de gérer directement le carnet d’ordre. Nous allons donc vous expliquer notre code étape par étape </p>
+<section id="b.-Mise-en-Avant-des-Concepts-de-Maker-et-Taker" class="level3">
+<h3 class="anchored" data-anchor-id="b.-Mise-en-Avant-des-Concepts-de-Maker-et-Taker">b. Mise en Avant des Concepts de Maker et Taker</h3>
+<p>- Maker : Les Makers ajoutent de la liquidité au marché en plaçant des ordres qui ne sont pas exécutés immédiatement, restant dans le carnet jusqu'à ce qu'un prix correspondant soit trouvé.</p>
+<p>- Taker : Les Takers retirent de la liquidité en exécutant des ordres contre les ordres existants dans le carnet, facilitant ainsi des transactions immédiates.</p>
+<p>Ces rôles influencent directement la dynamique de l'offre et de la demande et seront essentiels pour simuler le fonctionnement du marché.</p>
+<section id="c.-Intégration-des-Notions-de-Tick-et-Lot" class="level3">
+<h3 class="anchored" data-anchor-id="c.-Intégration-des-Notions-de-Tick-et-Lot">c. Intégration des Notions de Tick et Lot</h3>
+<p>- Tick : Le Tick représente le plus petit mouvement de prix possible pour un actif. Cette notion est cruciale pour déterminer comment les prix peuvent évoluer dans le carnet d'ordres.</p>
+<p>- Lot : Le Lot dénote la quantité minimale ou un multiple de cette quantité qu'un actif peut être échangé. Cette règle affecte la façon dont les ordres sont placés et exécutés.</p>
+<section id="Hypothèses-de-Construction-Révisées" class="level2">
+    <h2 class="anchored" data-anchor-id="Hypothèses-de-Construction-Révisées">Hypothèses de Construction Révisées</h2>
+    <p>1. Continuité et Flexibilité : Le simulateur gérera les ordres de manière continue, permettant à tout moment l'ajout et l'annulation d'ordres pour simuler un environnement de marché dynamique.</p>
+    <p>2. Rôles Dynamiques de Maker et Taker : Le simulateur reconnaîtra et distinguera les actions des Makers et des Takers pour refléter leur impact sur la liquidité du marché.</p>
+    <p>3. Respect des Contraintes de Tick et Lot : Les règles concernant les Ticks et les Lots sont intégrés à l'aide d'un bouton qui renvoie les valeurs à respecter pour l'utilisateur.</p>
+</section>
+<section id="Entités-Clés-et-Structure-de-Données" class="level2">
+    <h2 class="anchored" data-anchor-id="Entités-Clés-et-Structure-de-Données">Entités Clés et Structure de Données</h2>
+    <p>- Classe 'Ordre' : Représente un ordre dans le carnet avec des attributs pour le type d'ordre, le prix, la quantité, et l'identifiant du participant. Cette classe tiendra compte des notions de Tick et Lot pour valider les ordres.</p>
+    <p>- Classe 'CarnetOrdres' : Gère un ensemble d'ordres d'achat et de vente, en permettant leur ajout, leur annulation, et en fournissant une visualisation claire du carnet. Cette classe gérera également la distinction entre les ordres de Makers et de Takers pour simuler l'impact sur la liquidité.</p>
+</section>
+<section id="Conclusion-et-Prochaine-Étape" class="level2">
+    <h2 class="anchored" data-anchor-id="Conclusion-et-Prochaine-Étape">Conclusion et Prochaine Étape</h2>
+    <p>La prochaine étape consistera à détailler le développement de la classe CarnetOrdres et à simuler son fonctionnement dans un environnement de marché.</p>
+</section>
+</section>
+
+<section id="Développement-de-la-Classe-CarnetOrdres" class="level1">
+    <h1>Développement de la Classe CarnetOrdres</h1>
+    <hr>
+    <section id="Structure-de-la-Classe" class="level2">
+        <h2 class="anchored" data-anchor-id="Structure-de-la-Classe">a. Structure de la Classe</h2>
+        <p>La classe CarnetOrdres sera structurée pour gérer efficacement les ordres d'achat et de vente. Cette partie du code crée la classe CarnetOrdres, qui est le cœur de notre application de gestion des ordres. Lors de son initialisation, elle établit une connexion avec l'interface utilisateur (self.gui) pour permettre une interaction fluide entre la logique métier et l'interface graphique. Les variables self.ordres_achat et self.ordres_vente servent à stocker respectivement les ordres d'achat et de vente. Ces listes sont des conteneurs pour les données des ordres, telles que leur prix, leur quantité et leur identifiant. La liste self.transactions est destinée à enregistrer les transactions effectuées sur le marché. Chaque transaction est représentée sous forme de dictionnaire, capturant des détails tels que l'identifiant de l'ordre d'achat et de vente, ainsi que le prix et la quantité échangés. L'appel à self.lire_ordres(...) suggère l'existence d'une fonction pour charger les données initiales du carnet d'ordres à partir d'un fichier. Cela garantit que le carnet d'ordres est prérempli avec des données significatives au démarrage de l'application. Enfin, self.auto_executing est un indicateur booléen qui contrôle le mode continu de l'application. Lorsqu'il est activé, les ordres sont automatiquement exécutés à intervalles réguliers, offrant une fonctionnalité essentielle pour les traders qui souhaitent automatiser leurs transactions. </p>
+        <pre><code class="language-python">class CarnetOrdres:
+       import tkinter as tk
+    from tkinter import ttk
+    import tkinter.messagebox
+    import random
+    import time
+    class CarnetOrdres:
+        def __init__(self, gui):
+            self.gui = gui
+            self.ordres_achat = []
+            self.ordres_vente = []
+            self.transactions = []
+            self.lire_ordres('/Users/albanhoerdt/Documents/Cours Dauphine/L3/S2/Python/Projet/Donnees_OrderBook')
+            self.auto_executing = False  # Variable pour activer/désactiver le mode continu
+</code></pre>
+    </section>
+    <section id="Gestion-des-Ordres" class="level2">
+        <h2 class="anchored" data-anchor-id="Gestion-des-Ordres">b. Gestion des Ordres</h2>
+        <p>Cette fonction, toggle_auto_executing, est une pièce essentielle de notre application de gestion des ordres. Voici un résumé de son fonctionnement. Elle permet de basculer entre l'activation et la désactivation du mode d'exécution automatique des ordres. Lorsqu'elle est appelée, elle inverse simplement l'état actuel du mode automatique en basculant la valeur de self.auto_executing. Si le mode était activé, il serait désactivé et vice versa. Si le mode automatique est activé (self.auto_executing est True), la fonction effectue deux actions importantes. Elle appelle self.execute_continuously(), une méthode chargée d'exécuter les ordres en continu à intervalles réguliers, assurant ainsi que les transactions sont traitées en temps réel. Elle lance également immédiatement self.generate_orders_periodically(), une méthode destinée à démarrer la génération périodique de nouveaux ordres. Cela peut être utile pour assurer un flux constant d'ordres dans l'application. En revanche, si le mode automatique est désactivé, la fonction ne prend aucune action supplémentaire, mais elle pourrait être étendue à l'avenir pour inclure des fonctionnalités d'arrêt du processus, comme indiqué par le commentaire.</p>
+    </section>
+    <section id="Activation-mode-continu" class="level2">
+        <h2 class="anchored" data-anchor-id="Activation-mode-continu">c. Activation mode continu </h2>
+        <pre><code class="language-python"> def toggle_auto_executing(self):
+        self.auto_executing = not self.auto_executing
+        if self.auto_executing:
+            self.execute_continuously()
+            self.generate_orders_periodically()  # Appel immédiat pour démarrer la génération des ordres
+        else:
+            # Ajouter des mesures pour arrêter le processus si nécessaire
+            pass
+</code></pre>
+    </section>
+    <section id="Méthode-continu" class="level3">
+        <h2 class="anchored" data-anchor-id="Méthode-continu">Méthode continu</h2>
+        <p>On a ensuite la méthode, execute_continuously, assure une exécution continue des ordres à intervalles réguliers tant que le mode d'exécution automatique est activé. Elle vérifie d'abord si le mode automatique est activé. Si tel est le cas, elle lance l'exécution des ordres en appelant la méthode executer_ordres(). Ensuite, elle utilise self.gui.master.after(1000, self.execute_continuously) pour planifier un rappel de la méthode après une seconde (1000 millisecondes), assurant ainsi une exécution périodique des ordres. Ce processus se poursuit tant que le mode automatique reste activé, garantissant un flux continu d'activité de trading dans notre application.</p>
+    <pre><code class="language-python">def execute_continuously(self):
+        if self.auto_executing:
+            self.executer_ordres()
+            self.gui.master.after(1000, self.execute_continuously)
+    </code></pre>
+    </section>
+</section>
