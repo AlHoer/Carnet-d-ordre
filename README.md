@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <body>
-
 <div class="container">
          <section id="Projet-creation-dun-carnet-dordre" class="level1">
       <h1>Projet : Création d'un carnet d'ordre</h1>
