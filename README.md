@@ -6,9 +6,9 @@
          <section id="Projet-creation-dun-carnet-dordre" class="level1">
       <h1>Projet : Création d'un carnet d'ordre</h1>
       <hr>
-      <section id="1.---Analyse-et-Conception" class="level2">
-      <h2 class="anchored" data-anchor-id="1.---Analyse-et-Conception">1. Analyse et Conception</h2>
-      <section id="a.--Compréhension-Approfondie-des-Carnets-dOrdres" class="level3">
+      <section id="Analyse-et-Conception" class="level1">
+      <h1 class="anchored" data-anchor-id="Analyse-et-Conception"> Analyse et Conception</h1>
+      <section id="a.-Compréhension-Approfondie-des-Carnets-dOrdres" class="level3">
       <h3 class="anchored" data-anchor-id="a.--Compréhension-Approfondie-des-Carnets-dOrdres">a. Compréhension Approfondie des Carnets d'Ordres</h3>
       <p> Les carnets d'ordres doivent fonctionner de manière continue, reflétant un environnement dynamique où les participants peuvent à tout moment ajouter ou annuler des ordres. Cette flexibilité est essentielle pour simuler fidèlement le comportement des marchés financiers réels. Le projet que nous avons réalisé a pour but de créer un carnet d’ordres qui va être fonctionnel que cela soit pour stocker, exécuter, chercher ou même créer un ordre d’achat ou de vente. Il contient deux classes principales, la première est celle de la configuration qui va avoir pour objectif de créer un carnet d’ordre et de lui permettre de s’auto-gérer parfaitement. La seconde classe correspond à la création d’une interface qui va permettre à l’utilisateur de gérer directement le carnet d’ordre. Nous allons donc vous expliquer notre code étape par étape </p>
       <section id="b.-Mise-en-Avant-des-Concepts-de-Maker-et-Taker" class="level3">
@@ -437,7 +437,7 @@
    </code></pre>
            </section>
            <section id="methode-ouvrir_historique" class="level2">
-               <h2 class="anchored" data-anchor-id="methode-ouvrir_historique">h. Méthode-ouvrir_historique</h2>
+               <h2 class="anchored" data-anchor-id="methode-ouvrir_historique">h. Méthode ouvrir_historique</h2>
                <p>Cette fonction crée une nouvelle fenêtre pour afficher l'historique des transactions. Elle crée un widget Treeview pour afficher les données de l'historique sous forme de tableau. Les colonnes du tableau représentent les détails de chaque transaction, tels que les identifiants d'achat et de vente, la référence, le prix et la quantité. Les données sont extraites de l'attribut transactions de l'objet CarnetOrdres associé.</p>
                <pre><code class="language-python"> def ouvrir_historique(self):
        history_window = tk.Toplevel(self.master)
