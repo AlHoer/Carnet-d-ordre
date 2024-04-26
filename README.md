@@ -282,7 +282,7 @@
            <h2>Détermination des ticks et des lots</h2>
            <hr>
            <section id="methode-calculer_tick_et_lot" class="level3">
-               <h2 class="anchored" data-anchor-id="methode-calculer_tick_et_lot"> Méthode calculer_tick_et_lot</h2>
+               <h3 class="anchored" data-anchor-id="methode-calculer_tick_et_lot"> Méthode calculer_tick_et_lot</h3>
                <p>La fonction calculer_tick_et_lot prend en entrée une référence d'actif et cherche ses données de tick et de lot dans un fichier spécifié, ici Donnees_Tick_Lot. Elle ouvre le fichier, parcourt chaque ligne, et sépare les éléments en parties. Si la référence d'actif correspond à celle trouvée dans une ligne du fichier, la fonction extrait les valeurs du tick et du lot associé à cette référence. Ensuite, elle retourne ces valeurs. Si aucune correspondance n'est trouvée, elle retourne "N/A" pour indiquer que les données n'ont pas été trouvées. Cette fonction récupère les informations sur le tick et le lot d'un actif à partir d'un fichier et les renvoie pour utilisation.</p>
                <pre><code class="language-python"> def calculer_tick_et_lot(self, ref_actif):
        filepath = "/Users/albanhoerdt/Documents/Cours Dauphine L3/S2/Python/Projet/Donnees_Tick_Lot"
@@ -501,7 +501,7 @@
 </code></pre>
         </section>
     <section id="methode-initialisation-interface" class="level1">
-            <h2 class="anchored" data-anchor-id="methode-initialisation-interface">Méthode Initialisation Interface</h2>
+            <h1 class="anchored" data-anchor-id="methode-initialisation-interface">Méthode Initialisation Interface</h1>
             <p>Cette fonction initialise l'interface graphique en créant une instance de la classe tk.Tk() pour la fenêtre principale. Ensuite, elle crée une instance de CarnetOrdresGUI, la classe qui gère l'interface graphique de l'application. Enfin, elle démarre la boucle principale de l'interface graphique avec la méthode mainloop() de l'objet racine (root). La condition if __name__ == '__main__': garantit que le script est exécuté en tant que programme principal.</p>
             <pre><code class="language-python"> def main():
     root = tk.Tk()
@@ -513,7 +513,7 @@ if __name__ == '__main__':
     </code></pre>
         </section>
        <section id="Conclusion" class="level1">
-               <h2 class="anchored" data-anchor-id="Conclusion">Conclusion</h2>
+               <h1 class="anchored" data-anchor-id="Conclusion">Conclusion</h1>
                <p>Le projet de carnet d'ordres que nous avons développé est un exemple fonctionnel d'une application simple permettant de gérer des ordres d'achat et de vente sur un marché financier simulé. Voici quelques points à retenir de ce projet :
    
    1. **Fonctionnalités principales** : L'application permet d'ajouter des ordres d'achat et de vente, de les exécuter manuellement ou automatiquement en mode continu, et de visualiser le carnet d'ordres ainsi que l'historique des transactions.
